@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Proposal - Fora</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&family=Inter:wght@400;600;700;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #0066FF;
+            --secondary: #FF6B00;
+            --success: #00D563;
+            --dark: #1a1a1a;
+            --bg: #F7FAFC;
+            --white: #ffffff;
+            --text: #2D3748;
+            --light: #718096;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        
+        header {
+            padding: 32px 0;
+            background: var(--white);
+            border-bottom: 5px solid var(--primary);
+            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.1);
+        }
+        
+        .logo {
+            font-family: 'Archivo', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -1px;
+        }
+        
+        .hero {
+            padding: 80px 0 60px;
+            background: #003D5C;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+        }
+        
+        h1 {
+            font-family: 'Archivo', sans-serif;
+            font-size: 80px;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 32px;
+            color: var(--white);
+        }
+        
+        h1 span {
+            color: var(--success);
+            display: block;
+            margin-top: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .hero-subhead {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 900px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        
+        .solution {
+            padding: 60px 0 80px;
+            background: var(--white);
+        }
+        
+        h2 {
+            font-family: 'Archivo', sans-serif;
+            font-size: 60px;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 64px;
+            line-height: 1.1;
+            text-align: center;
+        }
+        
+        .deliverable {
+            background: var(--white);
+            padding: 56px;
+            margin-bottom: 40px;
+            border-left: 10px solid var(--primary);
+            box-shadow: 0 10px 40px rgba(0, 102, 255, 0.08);
+            position: relative;
+        }
+        
+        .deliverable-number {
+            position: absolute;
+            top: -30px;
+            left: 40px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--white);
+            box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
+        }
+        
+        .visual-flow {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 3px solid var(--bg);
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .flow-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--success) 0%, #00B856 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .flow-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .flow-text {
+            font-size: 18px;
+            color: var(--text);
+            font-weight: 600;
+        }
+        
+        .growth-chart {
+            margin-top: 40px;
+            padding: 32px;
+            background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .growth-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 16px;
+            height: 120px;
+            margin-top: 20px;
+        }
+        
+        .growth-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--primary) 0%, #4D94FF 100%);
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .growth-bar:hover {
+            transform: translateY(-8px);
+        }
+        
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--light);
+        }
+        
+        h3 {
+            font-family: 'Archivo', sans-serif;
+            font-size: 38px;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        .deliverable p {
+            font-size: 20px;
+            color: var(--text);
+            line-height: 1.7;
+        }
+        
+        .price-big {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-top: 28px;
+        }
+        
+        .implementation {
+            padding: 60px 0 80px;
+            background: linear-gradient(180deg, var(--white) 0%, var(--bg) 100%);
+        }
+        
+        .timeline-item {
+            background: var(--white);
+            padding: 0;
+            margin-bottom: 48px;
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .timeline-header {
+            background: linear-gradient(135deg, var(--success) 0%, #00B856 100%);
+            padding: 48px 56px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        
+        .checkmark {
+            width: 120px;
+            height: 120px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+        
+        .checkmark svg {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .timeline-title {
+            font-family: 'Archivo', sans-serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.2;
+        }
+        
+        .timeline-content {
+            padding: 48px 56px;
+        }
+        
+        .timeline-content p {
+            font-size: 22px;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        
+        .timeline-result {
+            background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%);
+            padding: 32px;
+            border-radius: 12px;
+            border-left: 6px solid var(--primary);
+        }
+        
+        .timeline-result strong {
+            font-size: 20px;
+            color: var(--primary);
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .arrow-down {
+            text-align: center;
+            margin: 32px 0;
+        }
+        
+        .arrow-down svg {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .pricing-section {
+            padding: 60px 0 80px;
+            background: var(--dark);
+        }
+        
+        .pricing-section h2 {
+            color: var(--white);
+        }
+        
+        .pricing-box {
+            background: var(--white);
+            border: 6px solid var(--primary);
+            padding: 64px;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 24px 0;
+            border-bottom: 2px solid var(--bg);
+            font-size: 22px;
+        }
+        
+        .price-total {
+            background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%);
+            padding: 40px;
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px;
+        }
+        
+        .total-label {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--white);
+        }
+        
+        .total-amount {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--success);
+        }
+        
+        .credit-box {
+            background: linear-gradient(135deg, #D4F1D4 0%, #B8E6B8 100%);
+            padding: 40px;
+            margin-top: 40px;
+            border-radius: 12px;
+            border: 4px solid var(--success);
+        }
+        
+        .credit-box h3 {
+            color: var(--success);
+            margin-bottom: 16px;
+        }
+        
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--secondary) 0%, #FF5500 100%);
+            text-align: center;
+        }
+        
+        .cta-section h2 {
+            color: var(--white);
+            margin-bottom: 32px;
+        }
+        
+        .cta-section p {
+            font-size: 26px;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 800px;
+            margin: 0 auto 48px;
+        }
+        
+        .btn {
+            background: var(--white);
+            color: var(--secondary);
+            padding: 28px 72px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        footer {
+            background: var(--dark);
+            padding: 40px 0;
+            text-align: center;
+            color: var(--light);
+        }
+        
+        @media (max-width: 968px) {
+            h1 { font-size: 48px; }
+            h2 { font-size: 40px; }
+            .timeline-header { flex-direction: column; text-align: center; }
+            .checkmark { width: 100px; height: 100px; }
+            .timeline-title { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">FORA</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>We Found the Revenue Leaks.<span>Here's How We Plug Them.</span></h1>
+            <p class="hero-subhead">Your audit revealed why PT practices aren't converting: they can't tell if you understand therapy caps, KX modifiers, or denial management. This system proves you know their billing nightmares better than their current RCM company - and gets them on assessment calls in 48 hours, not 7 days.</p>
+        </div>
+    </section>
+
+    <section class="solution">
+        <div class="container">
+            <h2>What We Build</h2>
+            
+            <div class="deliverable">
+                <div class="deliverable-number">1</div>
+                <h3>1. Medical Billing Website Redesign</h3>
+                <p>PT practices searching "therapy cap exceptions" land on a page about therapy caps - not your homepage. Behavioral health practices with 28% denial rates land on denial management pages. Each specialty sees you understand their exact revenue cycle problems.</p>
+                
+                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
+                    <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Authority Impact</div>
+                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
+                        <div style="width: 95%; height: 100%; background: linear-gradient(to right, var(--primary) 0%, #4D94FF 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
+                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">95%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 24px; font-size: 20px; color: var(--text); font-weight: 600;">This website increases authority with the partners that matter:</p>
+                <p style="font-size: 18px; color: var(--text); margin-top: 12px;">Insurance companies see specialty expertise. Google and AI search (ChatGPT, Claude, Perplexity) see structured medical billing content. Medical, Allied Health, Dental, and Surgery Center decision-makers see you understand their exact specialty billing requirements - not generic RCM services.</p>
+                
+                <div class="visual-flow">
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">PT Billing Page (KX modifiers, therapy caps, 8-minute rule)</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Behavioral Health Page (H codes, CPT 90837 denials, credentialing)</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Denial Management Page (AR >90 days, appeal templates, payer policies)</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Local Pages showing EHR integrations + DMV payer mix expertise</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deliverable">
+                <div class="deliverable-number">2</div>
+                <h3>2. Medical Billing SEO</h3>
+                <p>Rank for searches that prove expertise: "PT therapy cap exceptions 2025", "CPT 90837 denial rate", "behavioral health credentialing delays", "KX modifier documentation requirements". Not "medical billing services" - actual problems practices Google at 2am when claims are rejecting.</p>
+                
+                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
+                    <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Search Visibility Impact</div>
+                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
+                        <div style="width: 85%; height: 100%; background: linear-gradient(to right, var(--primary) 0%, #4D94FF 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
+                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">85%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="visual-flow">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">What We Optimize:</div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">On-Page SEO: Titles, meta descriptions, headers, keyword mapping for medical billing terms</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Technical SEO: Site speed, mobile optimization, schema markup, XML sitemaps, crawl efficiency</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 32px; padding: 24px; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--primary);">
+                    <div style="font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 16px;">Technologies We Use:</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
+                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Google Search Console</div>
+                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Search performance tracking</div>
+                        </div>
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
+                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Google Analytics</div>
+                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Traffic & conversion analysis</div>
+                        </div>
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
+                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Screaming Frog</div>
+                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Technical SEO audits</div>
+                        </div>
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
+                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Yoast SEO Premium</div>
+                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">On-page optimization</div>
+                        </div>
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
+                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Google My Business</div>
+                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Local search management</div>
+                        </div>
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
+                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Ahrefs/SEMrush</div>
+                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Keyword & competitor research</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deliverable">
+                <div class="deliverable-number">3</div>
+                <h3>3. Backlink Building</h3>
+                <p>Monthly high-authority backlinks from healthcare and business publications. Build domain authority so you outrank established RCM competitors. Each link placement is vetted for relevance to medical billing and revenue cycle management.</p>
+                
+                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px;">
+                    <div style="font-size: 14px; font-weight: 600; color: var(--success); margin-bottom: 8px;">AI Mentions & Reputation Impact</div>
+                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
+                        <div style="width: 90%; height: 100%; background: linear-gradient(to right, var(--success) 0%, #00E66C 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
+                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">90%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="visual-flow">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Backlink Methods:</div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Local government site placements (DC, Maryland, Virginia .gov sites)</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Healthcare association & chamber of commerce memberships</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Local nonprofit & community organization partnerships</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Guest posts on healthcare & business publications</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Medical billing industry directory listings</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">LinkedIn & Medium thought leadership articles</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deliverable">
+                <div class="deliverable-number">4</div>
+                <h3>4. Google My Business Optimization</h3>
+                <p>Optimize your current GMB profile or create new location-based listings for DC, Maryland, Virginia markets. Proper categorization, medical billing-specific keywords, service area setup, and review management to dominate local search for "medical billing services near me" and specialty-specific queries.</p>
+                
+                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #FFF5F0 0%, #FFFFFF 100%); border-radius: 8px;">
+                    <div style="font-size: 14px; font-weight: 600; color: var(--secondary); margin-bottom: 8px;">Local Search Impact</div>
+                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
+                        <div style="width: 88%; height: 100%; background: linear-gradient(to right, var(--secondary) 0%, #FF8533 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
+                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">88%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deliverable">
+                <div class="deliverable-number">5</div>
+                <h3>5. CRM Integration</h3>
+                <p>Track where leads come from. Tag by specialty, denial percentage, AR status. Sales only talks to qualified PT practices with real problems. We recommend HubSpot or GoHighLevel - both integrate seamlessly with your website and automation systems.</p>
+                
+                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
+                    <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Lead Quality Impact</div>
+                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
+                        <div style="width: 80%; height: 100%; background: linear-gradient(to right, var(--primary) 0%, #4D94FF 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
+                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">80%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="visual-flow">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Lead Flow Automation:</div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Practice fills form → Auto-tagged by specialty + problem</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Lead scored based on revenue potential + urgency</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Hot leads flagged → Sales prioritizes high-value opportunities</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deliverable">
+                <div class="deliverable-number">6</div>
+                <h3>6. Setup & Email Automation</h3>
+                <p>Instant booking. Automated reminders. Pre-call prep sequences. No-show recovery. Turns 50% show rate into 80%.</p>
+                
+                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px;">
+                    <div style="font-size: 14px; font-weight: 600; color: var(--success); margin-bottom: 8px;">Show Rate Impact</div>
+                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
+                        <div style="width: 80%; height: 100%; background: linear-gradient(to right, var(--success) 0%, #00E66C 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
+                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">80%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="visual-flow">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Email Sequence Automation:</div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">Instant: Booking confirmation + calendar invite</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">2 Days Before: Pre-call prep (what to bring, what to expect)</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">24 Hours Before: Final reminder + Zoom/call link</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="flow-text">If No-Show: Reschedule offer within 2 hours</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deliverable">
+                <div class="deliverable-number">7</div>
+                <h3>7. Elementor Pro License</h3>
+                <p>Your team can edit pages without developers.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="implementation">
+        <div class="container">
+            <h2 style="margin-bottom: 80px;">Project Completion Timeline</h2>
+            
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div class="checkmark">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="timeline-title">Month 1: Foundation Build</div>
+                </div>
+                <div class="timeline-content">
+                    <p>Website redesign complete. GMB profiles optimized. CRM integrated. Email automation sequences live. Calendar booking active.</p>
+                </div>
+            </div>
+
+            <div class="arrow-down">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div class="checkmark">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="timeline-title">Month 2: SEO & Content Launch</div>
+                </div>
+                <div class="timeline-content">
+                    <p>Technical SEO implemented. On-page optimization complete. First backlinks published. Specialty pages indexed and ranking.</p>
+                </div>
+            </div>
+
+            <div class="arrow-down">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div class="checkmark">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="timeline-title">Month 3: Full System Live</div>
+                </div>
+                <div class="timeline-content">
+                    <p>All deliverables complete. Rankings established. Lead flow active. Handoff training provided. Ongoing optimization begins.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="container">
+            <h2>Total Investment</h2>
+            <div class="pricing-box">
+                <h3 style="margin-bottom: 32px; text-align: center; color: var(--dark);">One-Time Build</h3>
+                <div class="price-row">
+                    <span>Medical Billing Website Redesign</span>
+                    <span style="font-weight: 900;">$4,500</span>
+                </div>
+                <div class="price-row">
+                    <span>Google My Business (All Locations: DC, MD, VA)</span>
+                    <span style="font-weight: 900;">$1,499</span>
+                </div>
+                <div class="price-row">
+                    <span>CRM Integration (HubSpot/GoHighLevel)</span>
+                    <span style="font-weight: 900;">$850</span>
+                </div>
+                <div class="price-row">
+                    <span>Setup & Email Automation</span>
+                    <span style="font-weight: 900;">$950</span>
+                </div>
+                <div class="price-total">
+                    <span class="total-label">One-Time Total</span>
+                    <span class="total-amount">$7,799</span>
+                </div>
+                
+                <div style="margin-top: 48px; padding-top: 40px; border-top: 3px solid var(--bg);">
+                    <h3 style="margin-bottom: 32px; text-align: center; color: var(--dark);">Ongoing Monthly</h3>
+                    <div class="price-row">
+                        <span>All SEO + Backlink Building (On-Page, Technical, GMB Management, Local Backlinks)</span>
+                        <span style="font-weight: 900;">$890/month</span>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%); padding: 32px; margin-top: 32px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 24px; font-weight: 900; color: var(--white);">Monthly Ongoing Total</span>
+                        <span style="font-size: 48px; font-weight: 900; color: var(--success);">$890</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 32px; padding-top: 32px; border-top: 3px solid var(--bg);">
+                    <h3 style="margin-bottom: 24px; text-align: center; color: var(--dark);">Annual Software Licenses</h3>
+                    <div class="price-row">
+                        <span>Elementor Pro</span>
+                        <span style="font-weight: 900;">$59/year</span>
+                    </div>
+                    <div class="price-row" style="border-bottom: none;">
+                        <span>Yoast SEO Premium</span>
+                        <span style="font-weight: 900;">$8/year</span>
+                    </div>
+                </div>
+                
+                <div class="credit-box">
+                    <h3>$1,000 Audit Credit Applied</h3>
+                    <p style="color: var(--text); font-size: 20px; line-height: 1.6;">Your audit findings go directly into page structure, SEO strategy, and conversion design. If you move forward, $1,000 of the audit cost gets credited toward implementation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 60px 0 80px; background: var(--white);">
+        <div class="container">
+            <h2>Client Intake Questionnaire</h2>
+            <p style="font-size: 22px; color: var(--light-text); text-align: center; max-width: 900px; margin: 0 auto 64px;">Required information before build begins. This ensures we integrate with your existing systems and focus on what actually drives revenue for Fora.</p>
+            
+            <form id="intakeForm" style="max-width: 1000px; margin: 0 auto;">
+                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--primary); margin-bottom: 32px; border-radius: 8px;">
+                    <h3 style="color: var(--primary); margin-bottom: 32px;">Infrastructure & Systems</h3>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">1. Who is your current hosting provider for yourfora.com?</label>
+                        <input type="text" name="hosting_provider" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. Do you already have a CRM in place?</label>
+                        <select name="crm_status" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
+                            <option value="">Select...</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                        <input type="text" name="crm_name" placeholder="If yes, which one? (HubSpot, Salesforce, GoHighLevel, other)" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
+                        <input type="text" name="crm_preference" placeholder="Keep and integrate, or replace?" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Do you currently use an email platform?</label>
+                        <select name="email_platform_status" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
+                            <option value="">Select...</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                        <input type="text" name="email_platform_name" placeholder="If yes, which one? (HubSpot, Mailchimp, ActiveCampaign, other)" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
+                        <input type="text" name="email_automation_status" placeholder="Automated sequences live or mostly manual?" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">4. Do you use any calendar or scheduling tool today?</label>
+                        <input type="text" name="calendar_tool" placeholder="If yes, which one?" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                </div>
+
+                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--success); margin-bottom: 32px; border-radius: 8px;">
+                    <h3 style="color: var(--success); margin-bottom: 32px;">Lead Flow & Sales Process</h3>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">1. What currently qualifies a practice as sales-ready?</label>
+                        <textarea name="sales_ready_criteria" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. Is the primary conversion goal an assessment call, demo, or direct sales conversation?</label>
+                        <input type="text" name="conversion_goal" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Average response time from new inquiry to first contact?</label>
+                        <input type="text" name="response_time" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">4. What typically causes deals to stall or go cold?</label>
+                        <textarea name="deal_stall_reasons" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
+                    </div>
+                </div>
+
+                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--secondary); margin-bottom: 32px; border-radius: 8px;">
+                    <h3 style="color: var(--secondary); margin-bottom: 24px;">Market & Positioning</h3>
+                    <div style="background: linear-gradient(to right, #FFF5F0 0%, #FFFFFF 100%); padding: 24px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid var(--secondary);">
+                        <p style="font-size: 16px; color: var(--light); margin-bottom: 12px; font-weight: 600;">What Fora Does:</p>
+                        <p style="font-size: 18px; color: var(--text); line-height: 1.7;">Full-spectrum medical, allied health, dental, and surgery center billing and revenue cycle optimization. Proactive management of every phase of the billing cycle using live EHR data - from claim creation to payer follow-up. End-to-end oversight that uncovers revenue leakage and drives continuous improvement.</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 12px;">1. Which billing companies does Fora most often compete against?</label>
+                        <textarea name="competitors" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. What phrases do practices usually say or search when they realize billing is breaking?</label>
+                        <textarea name="search_phrases" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Are most inbound leads urgent, comparison-driven, or exploratory?</label>
+                        <input type="text" name="lead_type" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                </div>
+
+                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--primary); border-radius: 8px; margin-bottom: 48px;">
+                    <h3 style="color: var(--primary); margin-bottom: 32px;">Decision Making & Revenue</h3>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">1. Who is the decision-maker at the practice (owner, administrator, billing director)?</label>
+                        <input type="text" name="decision_maker" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. Average contract value?</label>
+                        <input type="text" name="contract_value" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Typical sales cycle length?</label>
+                        <input type="text" name="sales_cycle" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #003D5C 0%, #002A40 100%); padding: 48px; border-radius: 12px; margin-bottom: 32px;">
+                    <h3 style="color: var(--white); margin-bottom: 24px; font-size: 28px;">Agreement & Contact Information</h3>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 12px;">Your Name</label>
+                        <input type="text" name="contact_name" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: var(--white); border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 12px;">Your Email</label>
+                        <input type="email" name="contact_email" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: var(--white); border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 12px;">Phone Number</label>
+                        <input type="tel" name="contact_phone" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: var(--white); border-radius: 8px; font-family: 'Inter', sans-serif;">
+                    </div>
+                    
+                    <div style="margin-top: 40px; padding-top: 32px; border-top: 2px solid rgba(255,255,255,0.2);">
+                        <label style="display: flex; align-items: start; gap: 16px; cursor: pointer;">
+                            <input type="checkbox" name="agreement" required style="width: 24px; height: 24px; margin-top: 4px; cursor: pointer;">
+                            <span style="font-size: 18px; color: var(--white); line-height: 1.6;">I agree to move forward with this proposal. I understand the one-time build cost is <strong>$7,799</strong> and ongoing monthly cost is <strong>$890/month (All SEO + Backlink Building)</strong> plus <strong>$67/year for software licenses</strong>. The $1,000 audit credit will be applied to the one-time build cost.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="submit" style="background: var(--primary); color: var(--white); padding: 28px 72px; border-radius: 12px; border: none; font-weight: 900; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; box-shadow: 0 12px 40px rgba(0, 102, 255, 0.3); transition: all 0.3s; font-family: 'Inter', sans-serif;">
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+    document.getElementById('intakeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Collect form data
+        const formData = new FormData(this);
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
+        // Create email body
+        let emailBody = 'FORA PROPOSAL APPLICATION%0D%0A%0D%0A';
+        emailBody += '=== INFRASTRUCTURE & SYSTEMS ===%0D%0A';
+        emailBody += 'Hosting Provider: ' + data.hosting_provider + '%0D%0A';
+        emailBody += 'CRM Status: ' + data.crm_status + '%0D%0A';
+        emailBody += 'CRM Name: ' + data.crm_name + '%0D%0A';
+        emailBody += 'CRM Preference: ' + data.crm_preference + '%0D%0A';
+        emailBody += 'Email Platform Status: ' + data.email_platform_status + '%0D%0A';
+        emailBody += 'Email Platform Name: ' + data.email_platform_name + '%0D%0A';
+        emailBody += 'Email Automation Status: ' + data.email_automation_status + '%0D%0A';
+        emailBody += 'Calendar Tool: ' + data.calendar_tool + '%0D%0A%0D%0A';
+        
+        emailBody += '=== LEAD FLOW & SALES PROCESS ===%0D%0A';
+        emailBody += 'Sales Ready Criteria: ' + data.sales_ready_criteria + '%0D%0A';
+        emailBody += 'Conversion Goal: ' + data.conversion_goal + '%0D%0A';
+        emailBody += 'Response Time: ' + data.response_time + '%0D%0A';
+        emailBody += 'Deal Stall Reasons: ' + data.deal_stall_reasons + '%0D%0A%0D%0A';
+        
+        emailBody += '=== MARKET & POSITIONING ===%0D%0A';
+        emailBody += 'Competitors: ' + data.competitors + '%0D%0A';
+        emailBody += 'Search Phrases: ' + data.search_phrases + '%0D%0A';
+        emailBody += 'Lead Type: ' + data.lead_type + '%0D%0A%0D%0A';
+        
+        emailBody += '=== DECISION MAKING & REVENUE ===%0D%0A';
+        emailBody += 'Decision Maker: ' + data.decision_maker + '%0D%0A';
+        emailBody += 'Contract Value: ' + data.contract_value + '%0D%0A';
+        emailBody += 'Sales Cycle: ' + data.sales_cycle + '%0D%0A%0D%0A';
+        
+        emailBody += '=== CONTACT INFORMATION ===%0D%0A';
+        emailBody += 'Name: ' + data.contact_name + '%0D%0A';
+        emailBody += 'Email: ' + data.contact_email + '%0D%0A';
+        emailBody += 'Phone: ' + data.contact_phone + '%0D%0A%0D%0A';
+        
+        emailBody += 'CLIENT AGREED TO PROPOSAL TERMS';
+        
+        // Send via mailto
+        window.location.href = 'mailto:webguys@gmail.com?subject=Fora Proposal Application - ' + data.contact_name + '&body=' + emailBody;
+        
+        // Show success message
+        alert('Thank you! Your application has been submitted. We will contact you shortly to schedule the kickoff call.');
+    });
+    </script>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Stop Losing PT Practices to<br>Generic RCM Companies</h2>
+            <p>Every week you wait is another week practices choose billing companies who can't tell the difference between CPT 97110 and 97530. You can. Now prove it with a site that speaks their language.</p>
+            <a href="mailto:contact@yourfora.com?subject=Let's Move Forward" class="btn">Let's Get Started</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Fora</p>
+        </div>
+    </footer>
+</body>
+</html>
