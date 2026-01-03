@@ -472,12 +472,6 @@
                         <div id="annualRevenue" style="font-size: 18px; color: var(--light); margin-top: 12px;">$300,000 additional annual revenue</div>
                     </div>
                 </div>
-                
-                <div style="margin-top: 32px; padding: 24px; background: var(--bg); border-radius: 8px; text-align: center;">
-                    <div style="font-size: 16px; color: var(--light); margin-bottom: 8px;">Your Investment:</div>
-                    <div style="font-size: 24px; font-weight: 700; color: var(--text);">$7,799 one-time + $890/month</div>
-                    <div id="roiMultiple" style="font-size: 20px; color: var(--primary); margin-top: 12px; font-weight: 600;">ROI: 28x in first month</div>
-                </div>
             </div>
         </div>
     </section>
@@ -494,14 +488,11 @@
         const additionalRevenue = newRevenue - currentRevenue;
         const annualAdditional = additionalRevenue * 12;
         
-        const monthlyInvestment = 890;
-        const roiMultiple = (additionalRevenue / monthlyInvestment).toFixed(1);
         
         document.getElementById('currentRevenue').textContent = '$' + currentRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
         document.getElementById('newRevenue').textContent = '$' + newRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
         document.getElementById('additionalRevenue').textContent = '+$' + additionalRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
         document.getElementById('annualRevenue').textContent = '$' + annualAdditional.toLocaleString('en-US', {maximumFractionDigits: 0}) + ' additional annual revenue';
-        document.getElementById('roiMultiple').textContent = 'ROI: ' + roiMultiple + 'x in first month';
     }
     
     document.getElementById('currentCalls').addEventListener('input', calculateROI);
@@ -518,7 +509,33 @@
             <div class="deliverable">
                 <div class="deliverable-number">1</div>
                 <h3>Medical Billing Website Redesign</h3>
-                <p>We build a specialty-specific funnel that moves visitors from problem recognition to booked assessment calls. PT practices land on pages showing their exact billing problems—claim denials, reimbursement issues, not getting paid. Behavioral health practices see credentialing and denial solutions. Each funnel is designed to prove expertise, build trust, and drive calendar bookings.</p>
+                <p style="font-size: 18px; color: var(--text); line-height: 1.7; margin-bottom: 20px;">We build a specialty-specific funnel that moves visitors from problem recognition to booked assessment calls. PT practices land on pages showing their exact billing problems with institutional-grade design quality.</p>
+                
+                <div style="margin: 20px 0; padding: 24px; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--primary);">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Design Aesthetic:</div>
+                    <p style="font-size: 16px; color: var(--text); margin-bottom: 12px;">The design mirrors high-end insurance companies. Clean, professional, trustworthy. This isn't a generic WordPress theme. This is a site that looks like it belongs in the same conversation as the insurance companies you're negotiating with.</p>
+                    <div style="font-size: 16px; font-weight: 600; color: var(--text); margin-top: 16px; margin-bottom: 8px;">Examples:</div>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 8px; padding-left: 24px; position: relative; font-size: 16px; color: var(--text);">
+                            <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Aetna
+                        </li>
+                        <li style="margin-bottom: 8px; padding-left: 24px; position: relative; font-size: 16px; color: var(--text);">
+                            <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Cigna
+                        </li>
+                        <li style="padding-left: 24px; position: relative; font-size: 16px; color: var(--text);">
+                            <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            UnitedHealthcare
+                        </li>
+                    </ul>
+                </div>
                 
                 <div style="margin: 32px 0; padding: 32px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 12px; border-left: 8px solid var(--success);">
                     <h4 style="font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 20px;">Your Website Becomes a Multi-Functional Revenue Asset</h4>
@@ -564,7 +581,54 @@
                 </div>
                 
                 <p style="margin-top: 24px; font-size: 20px; color: var(--text); font-weight: 600;">The funnel infrastructure we build:</p>
-                <p style="font-size: 18px; color: var(--text); margin-top: 12px;">Specialty landing pages for PT, Behavioral Health, Dental, and Surgery Centers. Problem-specific content addressing their exact billing crises. Integrated calendar booking on every page. CRM tracking to identify high-value leads. Email automation sequences to nurture no-shows. Every element designed to convert visitors into booked assessment calls.</p>
+                <ul style="font-size: 18px; color: var(--text); margin-top: 12px; line-height: 1.8; list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
+                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Specialty landing pages for PT, Behavioral Health, Dental, and Surgery Centers
+                    </li>
+                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
+                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Problem-specific content addressing their exact billing crises
+                    </li>
+                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
+                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Integrated calendar booking on every page
+                    </li>
+                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
+                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        CRM tracking to identify high-value leads
+                    </li>
+                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
+                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Email automation sequences to nurture no-shows
+                    </li>
+                    <li style="padding-left: 32px; position: relative;">
+                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Every element designed to convert visitors into booked assessment calls
+                    </li>
+                </ul>
+                
+                <div style="margin-top: 32px; padding: 24px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px; border-left: 4px solid var(--primary);">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 16px;">Presentation & Booking Software Integration:</div>
+                    <p style="font-size: 16px; color: var(--text); line-height: 1.6; margin-bottom: 12px;">Instant calendar booking integrated directly into your website. Visitors book assessment calls using Microsoft Teams, Zoom, or Google Meet—your choice. No back-and-forth scheduling. Click, pick a time, booked.</p>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px;">
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600; color: var(--text);">Microsoft Teams</div>
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600; color: var(--text);">Zoom</div>
+                        <div style="padding: 12px; background: var(--white); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600; color: var(--text);">Google Meet</div>
+                    </div>
+                </div>
             </div>
 
             <div class="deliverable">
@@ -743,7 +807,7 @@
             <div class="deliverable">
                 <div class="deliverable-number">5</div>
                 <h3>CRM Integration</h3>
-                <p>Track where leads come from. Tag by specialty, denial percentage, AR status. Sales only talks to qualified PT practices with real problems. We recommend HubSpot or GoHighLevel - both integrate seamlessly with your website and automation systems.</p>
+                <p style="font-size: 18px; color: var(--text); line-height: 1.7; margin-bottom: 24px;">We provide the infrastructure and automation to capture, qualify, and route leads based on the criteria you define. Choose your platform, set your qualification rules, and the system handles the rest.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
                     <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Lead Quality Impact</div>
@@ -754,8 +818,94 @@
                     </div>
                 </div>
                 
+                <div style="margin: 24px 0;">
+                    <div style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 20px;">Data Points Available for Qualification:</div>
+                    <div style="display: grid; gap: 16px;">
+                        <div style="padding: 20px; background: var(--white); border-radius: 8px; border-left: 4px solid var(--primary);">
+                            <div style="font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Business Size Metrics</div>
+                            <ul style="list-style: none; padding: 0; margin: 0; color: var(--text); font-size: 16px; line-height: 1.8;">
+                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Practice size (solo vs. multi-location)
+                                </li>
+                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Number of providers
+                                </li>
+                                <li style="padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Geographic locations
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div style="padding: 20px; background: var(--white); border-radius: 8px; border-left: 4px solid var(--success);">
+                            <div style="font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Revenue & Performance Metrics</div>
+                            <ul style="list-style: none; padding: 0; margin: 0; color: var(--text); font-size: 16px; line-height: 1.8;">
+                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Annual billing volume
+                                </li>
+                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Current denial rate
+                                </li>
+                                <li style="padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    AR aging status
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div style="padding: 20px; background: var(--white); border-radius: 8px; border-left: 4px solid var(--secondary);">
+                            <div style="font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Situational Context</div>
+                            <ul style="list-style: none; padding: 0; margin: 0; color: var(--text); font-size: 16px; line-height: 1.8;">
+                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Current RCM provider status
+                                </li>
+                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Specialty type (PT, Behavioral Health, Dental, Surgery)
+                                </li>
+                                <li style="padding-left: 24px; position: relative;">
+                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    Urgency level
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin: 24px 0; padding: 24px; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--primary);">
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Platform Options:</div>
+                    <p style="font-size: 16px; color: var(--text); margin-bottom: 16px;">We integrate with HubSpot or GoHighLevel. Both offer automatic lead scoring, routing, and prioritization based on your custom rules.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div style="padding: 16px; background: var(--white); border-radius: 6px; text-align: center; font-size: 18px; font-weight: 600; color: var(--text);">HubSpot</div>
+                        <div style="padding: 16px; background: var(--white); border-radius: 6px; text-align: center; font-size: 18px; font-weight: 600; color: var(--text);">GoHighLevel</div>
+                    </div>
+                </div>
+                
                 <div class="visual-flow">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Lead Flow Automation:</div>
+                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Automation Flow:</div>
                     <div class="flow-step">
                         <div class="flow-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
@@ -763,7 +913,7 @@
                                 <polyline points="12 6 12 12 16 14"></polyline>
                             </svg>
                         </div>
-                        <div class="flow-text">Practice fills form → Auto-tagged by specialty + problem</div>
+                        <div class="flow-text">Form submission captures all qualification data points</div>
                     </div>
                     <div class="flow-step">
                         <div class="flow-icon">
@@ -772,7 +922,7 @@
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
                         </div>
-                        <div class="flow-text">Lead scored based on revenue potential + urgency</div>
+                        <div class="flow-text">CRM auto-scores and tags based on your rules</div>
                     </div>
                     <div class="flow-step">
                         <div class="flow-icon">
@@ -787,7 +937,7 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">6</div>
-                <h3>Setup & Email Automation</h3>
+                <h3>Microsoft Teams Setup & Email Automation</h3>
                 <p>Instant booking. Automated reminders. Pre-call prep sequences. No-show recovery. Turns 50% show rate into 80%.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px;">
@@ -842,8 +992,38 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">7</div>
-                <h3>Elementor Pro License</h3>
-                <p>Your team can edit pages without developers.</p>
+                <h3>Website Maintenance</h3>
+                <p>Monthly updates, security patches, plugin updates, uptime monitoring, and technical support. Keep your site running smoothly and secure.</p>
+                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #F0F9FF; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--primary);">Monthly Services</div>
+            </div>
+
+            <!-- Add-On Services -->
+            <div class="deliverable" style="position: relative;">
+                <div style="position: absolute; top: -30px; left: 40px; background: var(--success); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,213,99,0.3);">UPGRADE ↑</div>
+                <h3>AI Voice Call Automation</h3>
+                <p>Automated AI voice calls thank practices for filling out forms, confirm assessment details, and follow up with no-shows. Sounds human, scales infinitely, converts better than email alone.</p>
+                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #D4F1D4; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--success);">Monthly Services</div>
+            </div>
+
+            <div class="deliverable" style="position: relative;">
+                <div style="position: absolute; top: -30px; left: 40px; background: var(--primary); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,102,255,0.3);">UPGRADE ↑</div>
+                <h3>YouTube Content Creation & SEO</h3>
+                <p>We research topics, create video content, optimize for YouTube SEO, and provide monthly performance reports. Build authority on the platform where practices research billing solutions.</p>
+                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #F0F9FF; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--primary);">Monthly Services</div>
+            </div>
+
+            <div class="deliverable" style="position: relative;">
+                <div style="position: absolute; top: -30px; left: 40px; background: var(--secondary); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(255,107,0,0.3);">UPGRADE ↑</div>
+                <h3>LinkedIn Cold Outreach to Decision Makers</h3>
+                <p>Using LinkedIn Sales Navigator and scraping tools, we identify decision-makers at target practices and send personalized cold email sequences. Proactive outbound to supplement inbound leads.</p>
+                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #FFF5F0; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--secondary);">Monthly Services</div>
+            </div>
+
+            <div class="deliverable" style="position: relative;">
+                <div style="position: absolute; top: -30px; left: 40px; background: var(--success); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,213,99,0.3);">UPGRADE ↑</div>
+                <h3>Social Media Management & Short-Form Video</h3>
+                <p>Regular content posting across Instagram Reels, TikTok, Twitter/X, and YouTube Shorts. Drive brand awareness and position you as the go-to medical billing expert in the DMV area.</p>
+                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #D4F1D4; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--success);">Monthly Services</div>
             </div>
         </div>
     </section>
@@ -1033,35 +1213,35 @@
                 <h3 style="margin-bottom: 32px; text-align: center; color: var(--dark);">One-Time Build</h3>
                 <div class="price-row">
                     <span>Medical Billing Website Redesign</span>
-                    <span style="font-weight: 900;">$4,500</span>
+                    <span style="font-weight: 900;">__________</span>
                 </div>
                 <div class="price-row">
                     <span>Google My Business Optimization & Creation (All Locations: DC, MD, VA)</span>
-                    <span style="font-weight: 900;">$1,499</span>
+                    <span style="font-weight: 900;">__________</span>
                 </div>
                 <div class="price-row">
                     <span>CRM Integration (HubSpot/GoHighLevel)</span>
-                    <span style="font-weight: 900;">$850</span>
+                    <span style="font-weight: 900;">__________</span>
                 </div>
                 <div class="price-row">
                     <span>Setup & Email Automation</span>
-                    <span style="font-weight: 900;">$950</span>
+                    <span style="font-weight: 900;">__________</span>
                 </div>
                 <div class="price-total">
                     <span class="total-label">One-Time Total</span>
-                    <span class="total-amount">$7,799</span>
+                    <span class="total-amount">__________</span>
                 </div>
                 
                 <div style="margin-top: 48px; padding-top: 40px; border-top: 3px solid var(--bg);">
                     <h3 style="margin-bottom: 32px; text-align: center; color: var(--dark);">Ongoing Monthly</h3>
                     <div class="price-row">
                         <span>All SEO + Backlink Building (On-Page, Technical, GMB Management, Local Backlinks)</span>
-                        <span style="font-weight: 900;">$890/month</span>
+                        <span style="font-weight: 900;">__________</span>
                     </div>
                     
                     <div style="background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%); padding: 32px; margin-top: 32px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 24px; font-weight: 900; color: var(--white);">Monthly Ongoing Total</span>
-                        <span style="font-size: 48px; font-weight: 900; color: var(--success);">$890</span>
+                        <span style="font-size: 48px; font-weight: 900; color: var(--success);">__________</span>
                     </div>
                 </div>
                 
@@ -1069,11 +1249,11 @@
                     <h3 style="margin-bottom: 24px; text-align: center; color: var(--dark);">Annual Software Licenses</h3>
                     <div class="price-row">
                         <span>Elementor Pro</span>
-                        <span style="font-weight: 900;">$59/year</span>
+                        <span style="font-weight: 900;">__________</span>
                     </div>
                     <div class="price-row" style="border-bottom: none;">
                         <span>Yoast SEO Premium</span>
-                        <span style="font-weight: 900;">$8/year</span>
+                        <span style="font-weight: 900;">__________</span>
                     </div>
                 </div>
                 
@@ -1285,7 +1465,7 @@
                     <div style="margin-top: 40px; padding-top: 32px; border-top: 2px solid rgba(255,255,255,0.2);">
                         <label style="display: flex; align-items: start; gap: 16px; cursor: pointer;">
                             <input type="checkbox" name="agreement" required style="width: 24px; height: 24px; margin-top: 4px; cursor: pointer;">
-                            <span style="font-size: 18px; color: var(--white); line-height: 1.6;">I agree to move forward with this proposal. I understand the one-time build cost is <strong>$7,799</strong> and ongoing monthly cost is <strong>$890/month (All SEO + Backlink Building)</strong> plus <strong>$67/year for software licenses</strong>. The $1,000 audit credit will be applied to the one-time build cost.</span>
+                            <span style="font-size: 18px; color: var(--white); line-height: 1.6;">I agree to move forward with this proposal. I understand there is a one-time build cost, ongoing monthly cost for SEO + Backlink Building, and annual software licenses. The $1,000 audit credit will be applied to the one-time build cost.</span>
                         </label>
                     </div>
                 </div>
@@ -1351,9 +1531,7 @@
         
         <p style="margin-top: 30px; padding: 20px; background: #D4F1D4; border-left: 4px solid #00AA44;">
             <strong>CLIENT AGREED TO PROPOSAL TERMS</strong><br>
-            One-time: $7,799<br>
-            Monthly: $890/month<br>
-            Annual licenses: $67/year
+            One-time build cost + Monthly SEO cost + Annual software licenses
         </p>
         `;
         
