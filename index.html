@@ -440,13 +440,84 @@
         </div>
     </section>
 
+    <section style="padding: 80px 0; background: linear-gradient(135deg, #0066FF 0%, #003D5C 100%);">
+        <div class="container">
+            <h2 style="color: var(--white); text-align: center; margin-bottom: 60px;">Revenue Impact Calculator</h2>
+            <div style="max-width: 800px; margin: 0 auto; background: var(--white); padding: 48px; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                <div style="margin-bottom: 32px;">
+                    <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Current monthly assessment calls:</label>
+                    <input type="number" id="currentCalls" value="10" min="0" style="width: 100%; padding: 16px; font-size: 18px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                </div>
+                
+                <div style="margin-bottom: 32px;">
+                    <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Average contract value:</label>
+                    <input type="number" id="contractValue" value="5000" min="0" step="100" style="width: 100%; padding: 16px; font-size: 18px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                </div>
+                
+                <div style="margin-bottom: 32px;">
+                    <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Close rate (%):</label>
+                    <input type="number" id="closeRate" value="20" min="0" max="100" style="width: 100%; padding: 16px; font-size: 18px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
+                </div>
+                
+                <div style="background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); padding: 32px; border-radius: 12px; border-left: 8px solid var(--success);">
+                    <div style="font-size: 16px; color: var(--text); margin-bottom: 8px;">Current Monthly Revenue:</div>
+                    <div id="currentRevenue" style="font-size: 48px; font-weight: 900; color: var(--success); margin-bottom: 24px;">$10,000</div>
+                    
+                    <div style="font-size: 16px; color: var(--text); margin-bottom: 8px;">After Implementation (35+ calls/month):</div>
+                    <div id="newRevenue" style="font-size: 48px; font-weight: 900; color: var(--success); margin-bottom: 24px;">$35,000</div>
+                    
+                    <div style="border-top: 3px solid var(--success); padding-top: 24px; margin-top: 24px;">
+                        <div style="font-size: 20px; color: var(--text); margin-bottom: 8px;">Additional Monthly Revenue:</div>
+                        <div id="additionalRevenue" style="font-size: 56px; font-weight: 900; color: var(--text);">+$25,000</div>
+                        <div id="annualRevenue" style="font-size: 18px; color: var(--light); margin-top: 12px;">$300,000 additional annual revenue</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 32px; padding: 24px; background: var(--bg); border-radius: 8px; text-align: center;">
+                    <div style="font-size: 16px; color: var(--light); margin-bottom: 8px;">Your Investment:</div>
+                    <div style="font-size: 24px; font-weight: 700; color: var(--text);">$7,799 one-time + $890/month</div>
+                    <div id="roiMultiple" style="font-size: 20px; color: var(--primary); margin-top: 12px; font-weight: 600;">ROI: 28x in first month</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    function calculateROI() {
+        const currentCalls = parseFloat(document.getElementById('currentCalls').value) || 0;
+        const contractValue = parseFloat(document.getElementById('contractValue').value) || 0;
+        const closeRate = parseFloat(document.getElementById('closeRate').value) || 0;
+        
+        const currentRevenue = currentCalls * contractValue * (closeRate / 100);
+        const newCalls = 35;
+        const newRevenue = newCalls * contractValue * (closeRate / 100);
+        const additionalRevenue = newRevenue - currentRevenue;
+        const annualAdditional = additionalRevenue * 12;
+        
+        const monthlyInvestment = 890;
+        const roiMultiple = (additionalRevenue / monthlyInvestment).toFixed(1);
+        
+        document.getElementById('currentRevenue').textContent = '$' + currentRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
+        document.getElementById('newRevenue').textContent = '$' + newRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
+        document.getElementById('additionalRevenue').textContent = '+$' + additionalRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
+        document.getElementById('annualRevenue').textContent = '$' + annualAdditional.toLocaleString('en-US', {maximumFractionDigits: 0}) + ' additional annual revenue';
+        document.getElementById('roiMultiple').textContent = 'ROI: ' + roiMultiple + 'x in first month';
+    }
+    
+    document.getElementById('currentCalls').addEventListener('input', calculateROI);
+    document.getElementById('contractValue').addEventListener('input', calculateROI);
+    document.getElementById('closeRate').addEventListener('input', calculateROI);
+    
+    calculateROI();
+    </script>
+
     <section class="solution">
         <div class="container">
             <h2>Here's What We'll Build</h2>
             
             <div class="deliverable">
                 <div class="deliverable-number">1</div>
-                <h3>1. Medical Billing Website Redesign</h3>
+                <h3>Medical Billing Website Redesign</h3>
                 <p>PT practices searching "therapy cap exceptions" land on a page about therapy caps - not your homepage. Behavioral health practices with 28% denial rates land on denial management pages. Each specialty sees you understand their exact revenue cycle problems.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
@@ -499,7 +570,7 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">2</div>
-                <h3>2. Medical Billing SEO</h3>
+                <h3>Medical Billing SEO</h3>
                 <p>Rank for searches that prove expertise: "PT therapy cap exceptions 2025", "CPT 90837 denial rate", "behavioral health credentialing delays", "KX modifier documentation requirements". Not "medical billing services" - actual problems practices Google at 2am when claims are rejecting.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
@@ -564,7 +635,7 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">3</div>
-                <h3>3. Backlink Building</h3>
+                <h3>Backlink Building</h3>
                 <p>Monthly high-authority backlinks from healthcare and business publications. Build domain authority so you outrank established RCM competitors. Each link placement is vetted for relevance to medical billing and revenue cycle management.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px;">
@@ -631,7 +702,7 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">4</div>
-                <h3>4. Google My Business Optimization & Creation</h3>
+                <h3>Google My Business Optimization & Creation</h3>
                 <p>Optimize your current GMB profile or create new location-based listings for DC, Maryland, Virginia markets. Proper categorization, medical billing-specific keywords, service area setup, and review management to dominate local search for "medical billing services near me" and specialty-specific queries.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #FFF5F0 0%, #FFFFFF 100%); border-radius: 8px;">
@@ -646,7 +717,7 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">5</div>
-                <h3>5. CRM Integration</h3>
+                <h3>CRM Integration</h3>
                 <p>Track where leads come from. Tag by specialty, denial percentage, AR status. Sales only talks to qualified PT practices with real problems. We recommend HubSpot or GoHighLevel - both integrate seamlessly with your website and automation systems.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
@@ -691,7 +762,7 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">6</div>
-                <h3>6. Setup & Email Automation</h3>
+                <h3>Setup & Email Automation</h3>
                 <p>Instant booking. Automated reminders. Pre-call prep sequences. No-show recovery. Turns 50% show rate into 80%.</p>
                 
                 <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px;">
@@ -746,8 +817,120 @@
 
             <div class="deliverable">
                 <div class="deliverable-number">7</div>
-                <h3>7. Elementor Pro License</h3>
+                <h3>Elementor Pro License</h3>
                 <p>Your team can edit pages without developers.</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 80px 0; background: var(--white);">
+        <div class="container">
+            <h2 style="margin-bottom: 60px;">Why Practices Choose Fora</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: var(--white); box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%);">
+                            <th style="padding: 24px; text-align: left; color: var(--white); font-size: 18px; font-weight: 700; width: 40%;"></th>
+                            <th style="padding: 24px; text-align: center; color: var(--white); font-size: 20px; font-weight: 900;">Fora</th>
+                            <th style="padding: 24px; text-align: center; color: rgba(255,255,255,0.8); font-size: 18px; font-weight: 600;">Generic RCM Companies</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 2px solid var(--bg);">
+                            <td style="padding: 24px; font-size: 16px; font-weight: 600; color: var(--text);">Specialty-Specific Expertise</td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--text);">PT, Behavioral Health, Dental, Surgery</div>
+                            </td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--light);">Generic "medical billing"</div>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 2px solid var(--bg);">
+                            <td style="padding: 24px; font-size: 16px; font-weight: 600; color: var(--text);">Website Shows Code-Level Knowledge</td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--text);">KX modifiers, therapy caps, H codes</div>
+                            </td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--light);">Generic homepage, no specifics</div>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 2px solid var(--bg);">
+                            <td style="padding: 24px; font-size: 16px; font-weight: 600; color: var(--text);">Local SEO (Google My Business)</td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--text);">DC, MD, VA optimization + creation</div>
+                            </td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--light);">Not included</div>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 2px solid var(--bg);">
+                            <td style="padding: 24px; font-size: 16px; font-weight: 600; color: var(--text);">Trust Building with Insurance & Law Firms</td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--text);">Compliance, audit defense content</div>
+                            </td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--light);">Sales-focused only</div>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 2px solid var(--bg);">
+                            <td style="padding: 24px; font-size: 16px; font-weight: 600; color: var(--text);">CRM Lead Scoring by Specialty</td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--text);">Tag by denial rate, AR status, specialty</div>
+                            </td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--light);">Basic contact form</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 24px; font-size: 16px; font-weight: 600; color: var(--text);">All-Inclusive Monthly Price</td>
+                            <td style="padding: 24px; text-align: center;">
+                                <svg style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <div style="margin-top: 8px; font-size: 18px; font-weight: 700; color: var(--success);">$890/month</div>
+                            </td>
+                            <td style="padding: 24px; text-align: center;">
+                                <div style="margin-top: 8px; font-size: 14px; color: var(--light);">$2,000-5,000/month</div>
+                                <div style="margin-top: 4px; font-size: 12px; color: var(--light);">Separate SEO, web dev, CRM costs</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
@@ -868,6 +1051,77 @@
                 <div class="credit-box">
                     <h3>$1,000 Audit Credit Applied</h3>
                     <p style="color: var(--text); font-size: 20px; line-height: 1.6;">Your audit findings go directly into page structure, SEO strategy, and conversion design. If you move forward, $1,000 of the audit cost gets credited toward implementation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 80px 0; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%);">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 60px;">What Happens After You Submit</h2>
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div style="display: grid; gap: 32px;">
+                    <div style="display: flex; gap: 24px; align-items: start;">
+                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);">1</div>
+                        <div>
+                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Kickoff Call (Within 48 Hours)</h3>
+                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">We review your intake responses, confirm hosting access, CRM choice, and domain details. Schedule the full 90-day timeline. Get your calendar link for scheduling assessments.</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 24px; align-items: start;">
+                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--success) 0%, #00AA44 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(0, 213, 99, 0.3);">2</div>
+                        <div>
+                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Foundation Build (Week 1-2)</h3>
+                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">Website redesign begins. Specialty pages go live. GMB profiles optimized. CRM integrated. Email automation configured. You'll see the first version of each page for approval.</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 24px; align-items: start;">
+                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--secondary) 0%, #FF5500 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(255, 107, 0, 0.3);">3</div>
+                        <div>
+                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">SEO & Backlinks Launch (Week 3-8)</h3>
+                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">Technical SEO implemented. On-page optimization complete. Local backlinks published (gov sites, chambers, nonprofits). First assessment calls start coming in from organic search.</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 24px; align-items: start;">
+                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);">4</div>
+                        <div>
+                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Handoff & Ongoing Optimization (Month 3+)</h3>
+                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">Full system live. Training provided on Elementor, CRM, and analytics. Monthly reporting on rankings, traffic, and lead quality. Continuous optimization based on conversion data.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 48px; padding: 32px; background: var(--white); border-radius: 12px; border-left: 8px solid var(--success); box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h3 style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 16px;">You'll Have Direct Access To:</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="font-size: 18px; color: var(--light); margin-bottom: 12px; padding-left: 32px; position: relative;">
+                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Project manager for timeline updates
+                        </li>
+                        <li style="font-size: 18px; color: var(--light); margin-bottom: 12px; padding-left: 32px; position: relative;">
+                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            SEO specialist for keyword strategy
+                        </li>
+                        <li style="font-size: 18px; color: var(--light); margin-bottom: 12px; padding-left: 32px; position: relative;">
+                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Web developer for technical questions
+                        </li>
+                        <li style="font-size: 18px; color: var(--light); padding-left: 32px; position: relative;">
+                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Monthly performance reports & analytics
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
