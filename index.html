@@ -1,1552 +1,711 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Implementation Proposal - Fora</title>
+    <title>Smart Grabber & Smart Flows | The Ultimate Lead Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&family=Inter:wght@400;600;700;900&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --primary: #0066FF;
-            --secondary: #FF6B00;
-            --success: #00D563;
-            --dark: #1a1a1a;
-            --bg: #F7FAFC;
-            --white: #ffffff;
-            --text: #2D3748;
-            --light: #718096;
-        }
-        
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 32px;
+        /* Classic Funnel Yellow Highlight */
+        .highlight-yellow {
+            background: linear-gradient(104deg, rgba(254, 240, 138, 0) 0.9%, rgba(254, 240, 138, 0.9) 2.4%, rgba(253, 224, 71, 0.8) 5.8%, rgba(253, 224, 71, 0.8) 93%, rgba(254, 240, 138, 0) 96%);
+            padding: 0 0.2em;
+            border-radius: 0.2em;
         }
-        
-        header {
-            padding: 32px 0;
-            background: var(--white);
-            border-bottom: 5px solid var(--primary);
-            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.1);
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
         }
-        
-        .logo {
-            font-family: 'Archivo', sans-serif;
-            font-size: 36px;
-            font-weight: 900;
-            color: var(--primary);
-            letter-spacing: -1px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .hero {
-            padding: 80px 0 60px;
-            background: #003D5C;
-            position: relative;
-            overflow: hidden;
+        .bounce-arrow {
+            animation: bounceDown 1.5s infinite;
         }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+        @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
         }
-        
-        h1 {
-            font-family: 'Archivo', sans-serif;
-            font-size: 80px;
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 32px;
-            color: var(--white);
+        .shadow-brutal {
+            box-shadow: 8px 8px 0px 0px #0f172a;
         }
-        
-        h1 span {
-            color: var(--success);
-            display: block;
-            margin-top: 20px;
-            letter-spacing: -1px;
+       
+        /* High-Contrast Funnel Buttons */
+        .btn-orange {
+            background: linear-gradient(to bottom, #ffad33, #ea580c);
+            color: #ffffff;
+            text-shadow: 0px 2px 3px rgba(124, 45, 18, 0.9);
+            border: 2px solid #9a3412;
+            box-shadow: 0 8px 0 0 #7c2d12, 0 15px 25px -5px rgba(234, 88, 12, 0.6), inset 0 2px 0 0 rgba(255,255,255,0.4);
+            transition: all 0.15s ease-in-out;
         }
-        
-        .hero-subhead {
-            font-size: 28px;
-            color: rgba(255, 255, 255, 0.95);
-            max-width: 900px;
-            font-weight: 400;
-            line-height: 1.5;
+        .btn-orange:hover {
+            background: linear-gradient(to bottom, #ffbe5c, #f97316);
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 0 #7c2d12, 0 10px 15px -5px rgba(234, 88, 12, 0.6), inset 0 2px 0 0 rgba(255,255,255,0.5);
         }
-        
-        .solution {
-            padding: 60px 0 80px;
-            background: var(--white);
+        .btn-orange:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 0 #7c2d12, inset 0 2px 0 0 rgba(255,255,255,0.1);
         }
-        
-        h2 {
-            font-family: 'Archivo', sans-serif;
-            font-size: 60px;
-            font-weight: 900;
-            color: var(--dark);
-            margin-bottom: 64px;
-            line-height: 1.1;
-            text-align: center;
+
+
+        .btn-blue {
+            background: linear-gradient(to bottom, #5296cb, #1d4e7d);
+            color: #ffffff;
+            text-shadow: 0px 2px 3px rgba(10, 26, 43, 0.9);
+            border: 2px solid #102a43;
+            box-shadow: 0 8px 0 0 #0a1a2b, 0 15px 25px -5px rgba(29, 78, 125, 0.6), inset 0 2px 0 0 rgba(255,255,255,0.3);
+            transition: all 0.15s ease-in-out;
         }
-        
-        .deliverable {
-            background: var(--white);
-            padding: 56px;
-            margin-bottom: 40px;
-            border-left: 10px solid var(--primary);
-            box-shadow: 0 10px 40px rgba(0, 102, 255, 0.08);
-            position: relative;
+        .btn-blue:hover {
+            background: linear-gradient(to bottom, #7eb6e2, #266198);
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 0 #0a1a2b, 0 10px 15px -5px rgba(29, 78, 125, 0.6), inset 0 2px 0 0 rgba(255,255,255,0.4);
         }
-        
-        .deliverable-number {
-            position: absolute;
-            top: -30px;
-            left: 40px;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: 900;
-            color: var(--white);
-            box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
-        }
-        
-        .visual-flow {
-            margin-top: 40px;
-            padding-top: 40px;
-            border-top: 3px solid var(--bg);
-        }
-        
-        .flow-step {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .flow-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--success) 0%, #00B856 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        
-        .flow-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-        
-        .flow-text {
-            font-size: 18px;
-            color: var(--text);
-            font-weight: 600;
-        }
-        
-        .growth-chart {
-            margin-top: 40px;
-            padding: 32px;
-            background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%);
-            border-radius: 12px;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .growth-bars {
-            display: flex;
-            align-items: flex-end;
-            gap: 16px;
-            height: 120px;
-            margin-top: 20px;
-        }
-        
-        .growth-bar {
-            flex: 1;
-            background: linear-gradient(to top, var(--primary) 0%, #4D94FF 100%);
-            border-radius: 8px 8px 0 0;
-            position: relative;
-            transition: all 0.3s;
-        }
-        
-        .growth-bar:hover {
-            transform: translateY(-8px);
-        }
-        
-        .bar-label {
-            position: absolute;
-            bottom: -30px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--light);
-        }
-        
-        h3 {
-            font-family: 'Archivo', sans-serif;
-            font-size: 38px;
-            font-weight: 900;
-            color: var(--dark);
-            margin-bottom: 20px;
-        }
-        
-        .deliverable p {
-            font-size: 20px;
-            color: var(--text);
-            line-height: 1.7;
-        }
-        
-        .price-big {
-            font-size: 36px;
-            font-weight: 900;
-            color: var(--primary);
-            margin-top: 28px;
-        }
-        
-        .implementation {
-            padding: 60px 0 80px;
-            background: linear-gradient(180deg, var(--white) 0%, var(--bg) 100%);
-        }
-        
-        .timeline-item {
-            background: var(--white);
-            padding: 0;
-            margin-bottom: 48px;
-            border-radius: 16px;
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-        
-        .timeline-header {
-            background: linear-gradient(135deg, var(--success) 0%, #00B856 100%);
-            padding: 48px 56px;
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-        
-        .checkmark {
-            width: 120px;
-            height: 120px;
-            background: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-        }
-        
-        .checkmark svg {
-            width: 70px;
-            height: 70px;
-        }
-        
-        .timeline-title {
-            font-family: 'Archivo', sans-serif;
-            font-size: 42px;
-            font-weight: 900;
-            color: var(--white);
-            line-height: 1.2;
-        }
-        
-        .timeline-content {
-            padding: 48px 56px;
-        }
-        
-        .timeline-content p {
-            font-size: 22px;
-            color: var(--text);
-            line-height: 1.7;
-            margin-bottom: 24px;
-        }
-        
-        .timeline-result {
-            background: linear-gradient(135deg, #E6F7FF 0%, #BAE7FF 100%);
-            padding: 32px;
-            border-radius: 12px;
-            border-left: 6px solid var(--primary);
-        }
-        
-        .timeline-result strong {
-            font-size: 20px;
-            color: var(--primary);
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .arrow-down {
-            text-align: center;
-            margin: 32px 0;
-        }
-        
-        .arrow-down svg {
-            width: 80px;
-            height: 80px;
-        }
-        
-        .pricing-section {
-            padding: 60px 0 80px;
-            background: var(--dark);
-        }
-        
-        .pricing-section h2 {
-            color: var(--white);
-        }
-        
-        .pricing-box {
-            background: var(--white);
-            border: 6px solid var(--primary);
-            padding: 64px;
-            max-width: 900px;
-            margin: 0 auto;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 24px 0;
-            border-bottom: 2px solid var(--bg);
-            font-size: 22px;
-        }
-        
-        .price-total {
-            background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%);
-            padding: 40px;
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 12px;
-        }
-        
-        .total-label {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--white);
-        }
-        
-        .total-amount {
-            font-size: 64px;
-            font-weight: 900;
-            color: var(--success);
-        }
-        
-        .credit-box {
-            background: linear-gradient(135deg, #D4F1D4 0%, #B8E6B8 100%);
-            padding: 40px;
-            margin-top: 40px;
-            border-radius: 12px;
-            border: 4px solid var(--success);
-        }
-        
-        .credit-box h3 {
-            color: var(--success);
-            margin-bottom: 16px;
-        }
-        
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, var(--secondary) 0%, #FF5500 100%);
-            text-align: center;
-        }
-        
-        .cta-section h2 {
-            color: var(--white);
-            margin-bottom: 32px;
-        }
-        
-        .cta-section p {
-            font-size: 26px;
-            color: rgba(255, 255, 255, 0.95);
-            max-width: 800px;
-            margin: 0 auto 48px;
-        }
-        
-        .btn {
-            background: var(--white);
-            color: var(--secondary);
-            padding: 28px 72px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 900;
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: inline-block;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
-        
-        footer {
-            background: var(--dark);
-            padding: 40px 0;
-            text-align: center;
-            color: var(--light);
-        }
-        
-        @media (max-width: 968px) {
-            h1 { font-size: 48px; }
-            h2 { font-size: 40px; }
-            .timeline-header { flex-direction: column; text-align: center; }
-            .checkmark { width: 100px; height: 100px; }
-            .timeline-title { font-size: 32px; }
+        .btn-blue:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 0 #0a1a2b, inset 0 2px 0 0 rgba(255,255,255,0.1);
         }
     </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <div class="logo">FORA</div>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="container">
-            <h1>We Found the Gaps.<span>Here's How We Fix Them.</span></h1>
-            <p class="hero-subhead">We handle everything: your new website, getting you found on Google, connecting leads to your calendar, and making sure practices actually book calls. No confusion. No tech headaches. Just a system that brings you qualified leads.</p>
-        </div>
-    </section>
-
-    <section style="padding: 80px 0; background: linear-gradient(135deg, #0066FF 0%, #003D5C 100%);">
-        <div class="container">
-            <h2 style="color: var(--white); text-align: center; margin-bottom: 60px;">Revenue Impact Calculator</h2>
-            <div style="max-width: 800px; margin: 0 auto; background: var(--white); padding: 48px; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-                <div style="margin-bottom: 32px;">
-                    <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Current monthly assessment calls:</label>
-                    <input type="number" id="currentCalls" value="10" min="0" style="width: 100%; padding: 16px; font-size: 18px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                </div>
-                
-                <div style="margin-bottom: 32px;">
-                    <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Average contract value:</label>
-                    <input type="number" id="contractValue" value="5000" min="0" step="100" style="width: 100%; padding: 16px; font-size: 18px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                </div>
-                
-                <div style="margin-bottom: 32px;">
-                    <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Close rate (%):</label>
-                    <input type="number" id="closeRate" value="20" min="0" max="100" style="width: 100%; padding: 16px; font-size: 18px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                </div>
-                
-                <div style="background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); padding: 32px; border-radius: 12px; border-left: 8px solid var(--success);">
-                    <div style="font-size: 16px; color: var(--text); margin-bottom: 8px;">Current Monthly Revenue:</div>
-                    <div id="currentRevenue" style="font-size: 48px; font-weight: 900; color: var(--success); margin-bottom: 24px;">$10,000</div>
-                    
-                    <div style="font-size: 16px; color: var(--text); margin-bottom: 8px;">After Implementation (35+ calls/month):</div>
-                    <div id="newRevenue" style="font-size: 48px; font-weight: 900; color: var(--success); margin-bottom: 24px;">$35,000</div>
-                    
-                    <div style="border-top: 3px solid var(--success); padding-top: 24px; margin-top: 24px;">
-                        <div style="font-size: 20px; color: var(--text); margin-bottom: 8px;">Additional Monthly Revenue:</div>
-                        <div id="additionalRevenue" style="font-size: 56px; font-weight: 900; color: var(--text);">+$25,000</div>
-                        <div id="annualRevenue" style="font-size: 18px; color: var(--light); margin-top: 12px;">$300,000 additional annual revenue</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <script>
-    function calculateROI() {
-        const currentCalls = parseFloat(document.getElementById('currentCalls').value) || 0;
-        const contractValue = parseFloat(document.getElementById('contractValue').value) || 0;
-        const closeRate = parseFloat(document.getElementById('closeRate').value) || 0;
-        
-        const currentRevenue = currentCalls * contractValue * (closeRate / 100);
-        const newCalls = 35;
-        const newRevenue = newCalls * contractValue * (closeRate / 100);
-        const additionalRevenue = newRevenue - currentRevenue;
-        const annualAdditional = additionalRevenue * 12;
-        
-        
-        document.getElementById('currentRevenue').textContent = '$' + currentRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
-        document.getElementById('newRevenue').textContent = '$' + newRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
-        document.getElementById('additionalRevenue').textContent = '+$' + additionalRevenue.toLocaleString('en-US', {maximumFractionDigits: 0});
-        document.getElementById('annualRevenue').textContent = '$' + annualAdditional.toLocaleString('en-US', {maximumFractionDigits: 0}) + ' additional annual revenue';
-    }
-    
-    document.getElementById('currentCalls').addEventListener('input', calculateROI);
-    document.getElementById('contractValue').addEventListener('input', calculateROI);
-    document.getElementById('closeRate').addEventListener('input', calculateROI);
-    
-    calculateROI();
-    </script>
-
-    <section class="solution">
-        <div class="container">
-            <h2>Here's What We'll Build</h2>
-            
-            <div class="deliverable">
-                <div class="deliverable-number">1</div>
-                <h3>Website ReDesign</h3>
-                <p style="font-size: 18px; color: var(--text); line-height: 1.7; margin-bottom: 20px;">We build a professional, industry-standard WordPress website showcasing your full-spectrum practice management services. Using clean, institutional-grade design that mirrors high-end healthcare organizations, we create a digital presence that positions you as a premier practice management partner.</p>
-                
-                <p style="font-size: 18px; color: var(--text); line-height: 1.7; margin-bottom: 20px;">Practices see exactly what you do, understand the depth of your capabilities across financial governance, operational stewardship, resource management, and patient engagement—eliminating any confusion about how you solve their most pressing administrative challenges.</p>
-                
-                <div style="margin: 20px 0; padding: 24px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px; border-left: 4px solid var(--success);">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 16px;">Your Comprehensive Services Featured:</div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <div style="font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px;">I. Strategic Financial Governance & Profit Enhancement</div>
-                        <ul style="margin: 0; padding-left: 20px; font-size: 16px; color: var(--text); line-height: 1.8;">
-                            <li>Centralized Profitability Optimization</li>
-                            <li>End-to-End Financial Governance</li>
-                            <li>Precision Payment Processing</li>
-                            <li>Persistent Stakeholder Advocacy & Liaison</li>
-                            <li>Advanced Financial Recovery & Appeals Stewardship</li>
-                            <li>Full-Spectrum Financial Accounting</li>
-                            <li>Optimized Accounts Payable Management</li>
-                        </ul>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <div style="font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px;">II. Operational Stewardship & Physical Infrastructure</div>
-                        <ul style="margin: 0; padding-left: 20px; font-size: 16px; color: var(--text); line-height: 1.8;">
-                            <li>Holistic Administrative Governance</li>
-                            <li>Strategic Credentialing & Payer Enrollment</li>
-                            <li>Facility & Infrastructure Oversight</li>
-                        </ul>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <div style="font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px;">III. Strategic Resource & Human Capital Management</div>
-                        <ul style="margin: 0; padding-left: 20px; font-size: 16px; color: var(--text); line-height: 1.8;">
-                            <li>Systemic Inventory & Supply Chain Optimization</li>
-                            <li>Strategic Purchasing & Vendor Relations</li>
-                            <li>Clinical Talent Acquisition Support</li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <div style="font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px;">IV. Clinical Continuity & Patient Engagement</div>
-                        <ul style="margin: 0; padding-left: 20px; font-size: 16px; color: var(--text); line-height: 1.8;">
-                            <li>Patient Journey Orchestration</li>
-                            <li>Strategic Clinical Outreach</li>
-                            <li>EHR Ecosystem Integration</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div style="margin: 20px 0; padding: 24px; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--primary);">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Design Aesthetic:</div>
-                    <p style="font-size: 16px; color: var(--text); margin-bottom: 12px;">The design mirrors high-end insurance companies. Clean, professional, trustworthy. This isn't a generic WordPress theme. This is a site that looks like it belongs in the same conversation as the insurance companies you're negotiating with.</p>
-                    <div style="font-size: 16px; font-weight: 600; color: var(--text); margin-top: 16px; margin-bottom: 8px;">Examples:</div>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 8px; padding-left: 24px; position: relative; font-size: 16px; color: var(--text);">
-                            <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Aetna
-                        </li>
-                        <li style="margin-bottom: 8px; padding-left: 24px; position: relative; font-size: 16px; color: var(--text);">
-                            <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Cigna
-                        </li>
-                        <li style="padding-left: 24px; position: relative; font-size: 16px; color: var(--text);">
-                            <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            UnitedHealthcare
-                        </li>
-                    </ul>
-                </div>
-                
-                <div style="margin: 32px 0; padding: 32px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 12px; border-left: 8px solid var(--success);">
-                    <h4 style="font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 20px;">Your Website Becomes a Multi-Functional Revenue Asset</h4>
-                    <div style="display: grid; gap: 16px;">
-                        <div style="display: flex; gap: 12px; align-items: start;">
-                            <div style="min-width: 32px; height: 32px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: var(--white);">1</div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: 700; color: var(--text);">You Establish Authority</div>
-                                <div style="font-size: 16px; color: var(--text); margin-top: 4px;">Insurance companies, law firms, and healthcare institutions see you're credentialed experts—not just another management company.</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 12px; align-items: start;">
-                            <div style="min-width: 32px; height: 32px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: var(--white);">2</div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: 700; color: var(--text);">You Build Trust</div>
-                                <div style="font-size: 16px; color: var(--text); margin-top: 4px;">Search engines and AI (ChatGPT, Claude, Perplexity) index your compliance content, audit defense language, and payer policy expertise—proving you understand regulatory complexity to both humans and algorithms.</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 12px; align-items: start;">
-                            <div style="min-width: 32px; height: 32px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: var(--white);">3</div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: 700; color: var(--text);">You Prove You Understand Their Challenges</div>
-                                <div style="font-size: 16px; color: var(--text); margin-top: 4px;">When practices see content addressing financial challenges, operational inefficiencies, credentialing issues, and administrative burdens—they know you've solved these exact problems before, not just "management consulting in general."</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 12px; align-items: start;">
-                            <div style="min-width: 32px; height: 32px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: var(--white);">4</div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: 700; color: var(--text);">You Move Them to Action</div>
-                                <div style="font-size: 16px; color: var(--text); margin-top: 4px;">Every page has a clear path to calendar booking. No generic "contact us" forms—instant scheduling removes friction and gets qualified practices on your assessment calls.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
-                    <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Authority Impact</div>
-                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
-                        <div style="width: 95%; height: 100%; background: linear-gradient(to right, var(--primary) 0%, #4D94FF 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
-                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">95%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 24px; font-size: 20px; color: var(--text); font-weight: 600;">The funnel infrastructure we build:</p>
-                <ul style="font-size: 18px; color: var(--text); margin-top: 12px; line-height: 1.8; list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
-                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Service-specific landing pages showcasing your comprehensive capabilities
-                    </li>
-                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
-                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Problem-specific content addressing their exact operational challenges
-                    </li>
-                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
-                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Integrated calendar booking on every page
-                    </li>
-                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
-                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        CRM tracking to identify high-value leads
-                    </li>
-                    <li style="margin-bottom: 12px; padding-left: 32px; position: relative;">
-                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Email automation sequences to nurture no-shows
-                    </li>
-                    <li style="padding-left: 32px; position: relative;">
-                        <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        Every element designed to convert visitors into booked assessment calls
-                    </li>
-                </ul>
-                
-                <div style="margin-top: 32px; padding: 24px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px; border-left: 4px solid var(--primary);">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 16px;">Presentation & Booking Software Integration:</div>
-                    <p style="font-size: 16px; color: var(--text); line-height: 1.6; margin-bottom: 12px;">Instant calendar booking integrated directly into your website. Visitors book assessment calls using Microsoft Teams, Zoom, or Google Meet—your choice. No back-and-forth scheduling. Click, pick a time, booked.</p>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px;">
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600; color: var(--text);">Microsoft Teams</div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600; color: var(--text);">Zoom</div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600; color: var(--text);">Google Meet</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="deliverable">
-                <div class="deliverable-number">2</div>
-                <h3>Practice Management SEO</h3>
-                <p>We focus on the services with the most online demand. We target searches where practices are actively looking for comprehensive practice management, financial optimization, operational support, and patient engagement solutions. These are high-intent, ready-to-buy searches from practices seeking full-service administrative partners.</p>
-                
-                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
-                    <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Search Visibility Impact</div>
-                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
-                        <div style="width: 85%; height: 100%; background: linear-gradient(to right, var(--primary) 0%, #4D94FF 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
-                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">85%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin: 24px 0;">
-                    <div style="padding: 20px; background: var(--white); border-radius: 8px; margin-bottom: 16px; border-left: 4px solid var(--success);">
-                        <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Financial Services Keywords</div>
-                        <div style="font-size: 16px; color: var(--text);">"medical practice management services", "healthcare administrative services", "practice operations management", "medical office management company", "practice financial management", "healthcare consulting services"</div>
-                    </div>
-                    
-                    <div style="padding: 20px; background: var(--white); border-radius: 8px; margin-bottom: 16px; border-left: 4px solid var(--success);">
-                        <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Operational Management Keywords</div>
-                        <div style="font-size: 16px; color: var(--text);">"medical practice management services", "healthcare administrative services", "practice operations management", "medical office management company", "credentialing services healthcare", "facility management medical practice"</div>
-                    </div>
-                    
-                    <div style="padding: 20px; background: var(--white); border-radius: 8px; border-left: 4px solid var(--success);">
-                        <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Location-Based Keywords</div>
-                        <div style="font-size: 16px; color: var(--text);">"medical practice management DC", "healthcare administrative services Maryland", "practice management Virginia", "DMV practice management company", "Washington DC medical office management"</div>
-                    </div>
-                </div>
-                
-                <div class="visual-flow">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">What We Optimize:</div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">On-Page SEO: Titles, meta descriptions, headers, keyword mapping for practice management terms</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Technical SEO: Site speed, mobile optimization, schema markup, XML sitemaps, crawl efficiency</div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 32px; padding: 24px; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--primary);">
-                    <div style="font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 16px;">Technologies We Use:</div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
-                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Google Search Console</div>
-                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Search performance tracking</div>
-                        </div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
-                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Google Analytics</div>
-                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Traffic & conversion analysis</div>
-                        </div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
-                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Looker Studio</div>
-                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Performance dashboards & reporting</div>
-                        </div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
-                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Screaming Frog</div>
-                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Technical SEO audits</div>
-                        </div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
-                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Yoast SEO Premium</div>
-                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">On-page optimization</div>
-                        </div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
-                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Google My Business</div>
-                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Local search management</div>
-                        </div>
-                        <div style="padding: 12px; background: var(--white); border-radius: 6px;">
-                            <div style="font-size: 16px; font-weight: 600; color: var(--text);">→ Ahrefs/SEMrush</div>
-                            <div style="font-size: 14px; color: var(--light); margin-top: 4px;">Keyword & competitor research</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="deliverable">
-                <div class="deliverable-number">3</div>
-                <h3>Backlink Building</h3>
-                <p>Monthly high-authority backlinks from healthcare and business publications. Build domain authority so you outrank established practice management competitors. Each link placement is vetted for relevance to comprehensive practice management services.</p>
-                
-                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px;">
-                    <div style="font-size: 14px; font-weight: 600; color: var(--success); margin-bottom: 8px;">AI Mentions & Reputation Impact</div>
-                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
-                        <div style="width: 90%; height: 100%; background: linear-gradient(to right, var(--success) 0%, #00E66C 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
-                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">90%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="visual-flow">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Backlink Methods:</div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Local government site placements (DC, Maryland, Virginia .gov sites)</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Healthcare association & chamber of commerce memberships</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Local nonprofit & community organization partnerships</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Guest posts on healthcare & business publications</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Practice management industry directory listings</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">LinkedIn & Medium thought leadership articles</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="deliverable">
-                <div class="deliverable-number">4</div>
-                <h3>Google My Business Optimization & Creation</h3>
-                <p>Optimize your current GMB profile or create new location-based listings for DC, Maryland, Virginia markets. Proper categorization, practice management-specific keywords, service area setup, and review management to dominate local search for "practice management services near me" and specialty-specific queries.</p>
-                
-                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #FFF5F0 0%, #FFFFFF 100%); border-radius: 8px;">
-                    <div style="font-size: 14px; font-weight: 600; color: var(--secondary); margin-bottom: 8px;">Local Search Impact</div>
-                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
-                        <div style="width: 88%; height: 100%; background: linear-gradient(to right, var(--secondary) 0%, #FF8533 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
-                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">88%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="deliverable">
-                <div class="deliverable-number">5</div>
-                <h3>CRM Integration</h3>
-                <p style="font-size: 18px; color: var(--text); line-height: 1.7; margin-bottom: 24px;">We provide the infrastructure and automation to capture, qualify, and route leads based on the criteria you define. Choose your platform, set your qualification rules, and the system handles the rest.</p>
-                
-                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%); border-radius: 8px;">
-                    <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 8px;">Lead Quality Impact</div>
-                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
-                        <div style="width: 80%; height: 100%; background: linear-gradient(to right, var(--primary) 0%, #4D94FF 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
-                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">80%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin: 24px 0;">
-                    <div style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 20px;">Data Points Available for Qualification:</div>
-                    <div style="display: grid; gap: 16px;">
-                        <div style="padding: 20px; background: var(--white); border-radius: 8px; border-left: 4px solid var(--primary);">
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Business Size Metrics</div>
-                            <ul style="list-style: none; padding: 0; margin: 0; color: var(--text); font-size: 16px; line-height: 1.8;">
-                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Practice size (solo vs. multi-location)
-                                </li>
-                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Number of providers
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Geographic locations
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div style="padding: 20px; background: var(--white); border-radius: 8px; border-left: 4px solid var(--success);">
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Revenue & Performance Metrics</div>
-                            <ul style="list-style: none; padding: 0; margin: 0; color: var(--text); font-size: 16px; line-height: 1.8;">
-                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Annual revenue volume
-                                </li>
-                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Current operational challenges
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Growth trajectory
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div style="padding: 20px; background: var(--white); border-radius: 8px; border-left: 4px solid var(--secondary);">
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">Situational Context</div>
-                            <ul style="list-style: none; padding: 0; margin: 0; color: var(--text); font-size: 16px; line-height: 1.8;">
-                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Current RCM provider status
-                                </li>
-                                <li style="margin-bottom: 8px; padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Practice type (Medical, Dental, Allied Health)
-                                </li>
-                                <li style="padding-left: 24px; position: relative;">
-                                    <svg style="position: absolute; left: 0; top: 4px; width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="3">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                    Urgency level
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin: 24px 0; padding: 24px; background: var(--bg); border-radius: 8px; border-left: 4px solid var(--primary);">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Platform Options:</div>
-                    <p style="font-size: 16px; color: var(--text); margin-bottom: 16px;">We integrate with HubSpot or GoHighLevel. Both offer automatic lead scoring, routing, and prioritization based on your custom rules.</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                        <div style="padding: 16px; background: var(--white); border-radius: 6px; text-align: center; font-size: 18px; font-weight: 600; color: var(--text);">HubSpot</div>
-                        <div style="padding: 16px; background: var(--white); border-radius: 6px; text-align: center; font-size: 18px; font-weight: 600; color: var(--text);">GoHighLevel</div>
-                    </div>
-                </div>
-                
-                <div class="visual-flow">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Automation Flow:</div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Form submission captures all qualification data points</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">CRM auto-scores and tags based on your rules</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Hot leads flagged → Sales prioritizes high-value opportunities</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="deliverable">
-                <div class="deliverable-number">6</div>
-                <h3>Microsoft Teams Setup & Email Automation</h3>
-                <p>Instant booking. Automated reminders. Pre-call prep sequences. No-show recovery. Turns 50% show rate into 80%.</p>
-                
-                <div style="margin: 24px 0; padding: 20px; background: linear-gradient(to right, #D4F1D4 0%, #B8E6B8 100%); border-radius: 8px;">
-                    <div style="font-size: 14px; font-weight: 600; color: var(--success); margin-bottom: 8px;">Show Rate Impact</div>
-                    <div style="width: 100%; height: 28px; background: #E2E8F0; border-radius: 14px; overflow: hidden;">
-                        <div style="width: 80%; height: 100%; background: linear-gradient(to right, var(--success) 0%, #00E66C 100%); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; border-radius: 14px;">
-                            <span style="font-size: 14px; font-weight: 900; color: var(--white);">80%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="visual-flow">
-                    <div style="font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 24px;">Email Sequence Automation:</div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">Instant: Booking confirmation + calendar invite</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">2 Days Before: Pre-call prep (what to bring, what to expect)</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">24 Hours Before: Final reminder + Zoom/call link</div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="flow-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </div>
-                        <div class="flow-text">If No-Show: Reschedule offer within 2 hours</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="deliverable">
-                <div class="deliverable-number">7</div>
-                <h3>Website Maintenance</h3>
-                <p>Monthly updates, security patches, plugin updates, uptime monitoring, and technical support. Keep your site running smoothly and secure.</p>
-                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #F0F9FF; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--primary);">Monthly Services</div>
-            </div>
-
-            <!-- Add-On Services -->
-            <div class="deliverable" style="position: relative;">
-                <div style="position: absolute; top: -30px; left: 40px; background: var(--success); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,213,99,0.3);">UPGRADE ↑</div>
-                <h3>AI Voice Call Automation</h3>
-                <p>Automated AI voice calls thank practices for filling out forms, confirm assessment details, and follow up with no-shows. Sounds human, scales infinitely, converts better than email alone.</p>
-                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #D4F1D4; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--success);">Monthly Services</div>
-            </div>
-
-            <div class="deliverable" style="position: relative;">
-                <div style="position: absolute; top: -30px; left: 40px; background: var(--primary); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,102,255,0.3);">UPGRADE ↑</div>
-                <h3>YouTube Content Creation & SEO</h3>
-                <p>We research topics, create video content, optimize for YouTube SEO, and provide monthly performance reports. Build authority on the platform where practices research management solutions.</p>
-                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #F0F9FF; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--primary);">Monthly Services</div>
-            </div>
-
-            <div class="deliverable" style="position: relative;">
-                <div style="position: absolute; top: -30px; left: 40px; background: var(--secondary); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(255,107,0,0.3);">UPGRADE ↑</div>
-                <h3>LinkedIn Cold Outreach to Decision Makers</h3>
-                <p>Using LinkedIn Sales Navigator and scraping tools, we identify decision-makers at target practices and send personalized cold email sequences. Proactive outbound to supplement inbound leads.</p>
-                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #FFF5F0; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--secondary);">Monthly Services</div>
-            </div>
-
-            <div class="deliverable" style="position: relative;">
-                <div style="position: absolute; top: -30px; left: 40px; background: var(--success); color: var(--white); padding: 10px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(0,213,99,0.3);">UPGRADE ↑</div>
-                <h3>Social Media Management & Short-Form Video</h3>
-                <p>Regular content posting across Instagram Reels, TikTok, Twitter/X, and YouTube Shorts. Drive brand awareness and position you as the go-to practice management expert in the DMV area.</p>
-                <div style="margin-top: 16px; display: inline-block; padding: 12px 24px; background: #D4F1D4; border-radius: 8px; font-size: 18px; font-weight: 700; color: var(--success);">Monthly Services</div>
-            </div>
-        </div>
-    </section>
-
-    <section style="padding: 80px 0; background: var(--bg);">
-        <div class="container">
-            <h2 style="margin-bottom: 60px;">Why Practices Choose Fora</h2>
-            <div style="max-width: 1000px; margin: 0 auto;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px;">
-                    <div style="background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%); padding: 32px; border-radius: 12px; text-align: center;">
-                        <h3 style="font-size: 28px; font-weight: 900; color: var(--white); margin: 0;">Fora</h3>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #718096 0%, #4A5568 100%); padding: 32px; border-radius: 12px; text-align: center;">
-                        <h3 style="font-size: 28px; font-weight: 900; color: var(--white); margin: 0;">Generic RCM</h3>
-                    </div>
-                </div>
-                
-                <!-- Row 1 -->
-                <div style="background: var(--white); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-                    <h4 style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 24px; text-align: center;">Specialty-Specific Expertise</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                        <div style="background: linear-gradient(to bottom, #D4F1D4 0%, #B8E6B8 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid var(--success);">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">Medical, Dental,<br>Allied Health</div>
-                        </div>
-                        <div style="background: linear-gradient(to bottom, #FED7D7 0%, #FEB2B2 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid #E53E3E;">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">Generic<br>"practice management"</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Row 2 -->
-                <div style="background: var(--white); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-                    <h4 style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 24px; text-align: center;">Local SEO (Google My Business)</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                        <div style="background: linear-gradient(to bottom, #D4F1D4 0%, #B8E6B8 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid var(--success);">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">DC, MD, VA optimization<br>+ creation</div>
-                        </div>
-                        <div style="background: linear-gradient(to bottom, #FED7D7 0%, #FEB2B2 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid #E53E3E;">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">Not included</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Row 4 -->
-                <div style="background: var(--white); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-                    <h4 style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 24px; text-align: center;">Trust Building with Insurance & Law Firms</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                        <div style="background: linear-gradient(to bottom, #D4F1D4 0%, #B8E6B8 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid var(--success);">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">Compliance & audit<br>defense content</div>
-                        </div>
-                        <div style="background: linear-gradient(to bottom, #FED7D7 0%, #FEB2B2 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid #E53E3E;">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">Sales-focused only</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Row 5 -->
-                <div style="background: var(--white); padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-                    <h4 style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 24px; text-align: center;">CRM Lead Scoring by Specialty</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                        <div style="background: linear-gradient(to bottom, #D4F1D4 0%, #B8E6B8 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid var(--success);">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">Comprehensive performance<br>metrics & analytics</div>
-                        </div>
-                        <div style="background: linear-gradient(to bottom, #FED7D7 0%, #FEB2B2 100%); padding: 32px; border-radius: 8px; text-align: center; border: 3px solid #E53E3E;">
-                            <svg style="width: 64px; height: 64px; margin: 0 auto 16px;" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="3">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                            <div style="font-size: 18px; font-weight: 600; color: var(--text);">Basic contact form</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="implementation">
-        <div class="container">
-            <h2 style="margin-bottom: 80px;">90-Day Project Timeline</h2>
-            
-            <div class="timeline-item">
-                <div class="timeline-header">
-                    <div class="checkmark">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <div class="timeline-title">Month 1: Foundation & Design</div>
-                </div>
-                <div class="timeline-content">
-                    <p><strong>Weeks 1-2:</strong> Competitor research, design mockups created and approved, Elementor kit built with all templates and components.</p>
-                    <p><strong>Weeks 3-4:</strong> All website copy written, service pages built, GMB profiles created for DC/MD/VA, local directory submissions, on-page SEO optimization complete.</p>
-                    <div class="timeline-result">
-                        <strong>Month 1 Deliverables:</strong> Complete website with content, GMB profiles live in 3 locations, SEO foundation established.
-                    </div>
-                </div>
-            </div>
-
-            <div class="arrow-down">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <polyline points="19 12 12 19 5 12"></polyline>
-                </svg>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-header">
-                    <div class="checkmark">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <div class="timeline-title">Month 2: Automation & Content</div>
-                </div>
-                <div class="timeline-content">
-                    <p><strong>Weeks 5-6:</strong> CRM integration complete with lead scoring, Microsoft Teams calendar booking live, 5 email automation sequences configured and tested, full system testing.</p>
-                    <p><strong>Weeks 7-8:</strong> Blog setup, first 4 blog posts published, FAQ pages created, location-specific content added.</p>
-                    <div class="timeline-result">
-                        <strong>Month 2 Deliverables:</strong> Full automation system operational, CRM capturing leads, email sequences active, blog content live.
-                    </div>
-                </div>
-            </div>
-
-            <div class="arrow-down">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <polyline points="19 12 12 19 5 12"></polyline>
-                </svg>
-            </div>
-
-            <div class="timeline-item">
-                <div class="timeline-header">
-                    <div class="checkmark">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#00D563" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <div class="timeline-title">Month 3: Launch & Optimization</div>
-                </div>
-                <div class="timeline-content">
-                    <p><strong>Weeks 9-10:</strong> Active backlink campaign launched, healthcare blog outreach, guest post placements, local partnership links.</p>
-                    <p><strong>Weeks 11-12:</strong> Final QA completed, site launched to production, Google Search Console monitoring setup, client training session, ongoing services activated.</p>
-                    <div class="timeline-result">
-                        <strong>Month 3 Deliverables:</strong> Complete system live, backlink campaign active, training completed, ongoing SEO/GMB/maintenance services begin.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section style="padding: 80px 0; background: linear-gradient(to right, #F0F9FF 0%, #E6F7FF 100%);">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 60px;">What Happens After You Submit</h2>
-            <div style="max-width: 900px; margin: 0 auto;">
-                <div style="display: grid; gap: 32px;">
-                    <div style="display: flex; gap: 24px; align-items: start;">
-                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);">1</div>
-                        <div>
-                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Kickoff Call (Within 48 Hours)</h3>
-                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">We review your intake responses, confirm hosting access, CRM choice, and domain details. Schedule the full 90-day timeline. Get your calendar link for scheduling assessments.</p>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 24px; align-items: start;">
-                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--success) 0%, #00AA44 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(0, 213, 99, 0.3);">2</div>
-                        <div>
-                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Foundation Build (Week 1-2)</h3>
-                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">Website redesign begins. Specialty pages go live. GMB profiles optimized. CRM integrated. Email automation configured. You'll see the first version of each page for approval.</p>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 24px; align-items: start;">
-                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--secondary) 0%, #FF5500 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(255, 107, 0, 0.3);">3</div>
-                        <div>
-                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">SEO & Backlinks Launch (Week 3-8)</h3>
-                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">Technical SEO implemented. On-page optimization complete. Local backlinks published (gov sites, chambers, nonprofits). First assessment calls start coming in from organic search.</p>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 24px; align-items: start;">
-                        <div style="min-width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, #0052CC 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 900; color: var(--white); box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);">4</div>
-                        <div>
-                            <h3 style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 12px;">Handoff & Ongoing Optimization (Month 3+)</h3>
-                            <p style="font-size: 18px; color: var(--light); line-height: 1.6;">Full system live. Training provided on Elementor, CRM, and analytics. Monthly reporting on rankings, traffic, and lead quality. Continuous optimization based on conversion data.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 48px; padding: 32px; background: var(--white); border-radius: 12px; border-left: 8px solid var(--success); box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-                    <h3 style="font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 16px;">You'll Have Direct Access To:</h3>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="font-size: 18px; color: var(--light); margin-bottom: 12px; padding-left: 32px; position: relative;">
-                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Project manager for timeline updates
-                        </li>
-                        <li style="font-size: 18px; color: var(--light); margin-bottom: 12px; padding-left: 32px; position: relative;">
-                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            SEO specialist for keyword strategy
-                        </li>
-                        <li style="font-size: 18px; color: var(--light); margin-bottom: 12px; padding-left: 32px; position: relative;">
-                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Web developer for technical questions
-                        </li>
-                        <li style="font-size: 18px; color: var(--light); padding-left: 32px; position: relative;">
-                            <svg style="position: absolute; left: 0; top: 4px; width: 20px; height: 20px;" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="3">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Monthly performance reports & analytics
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section style="padding: 60px 0 80px; background: var(--white);">
-        <div class="container">
-            <h2>Client Intake Questionnaire</h2>
-            <p style="font-size: 22px; color: var(--light-text); text-align: center; max-width: 900px; margin: 0 auto 64px;">Required information before build begins. This ensures we integrate with your existing systems and focus on what actually drives revenue for Fora.</p>
-            
-            <form id="intakeForm" style="max-width: 1000px; margin: 0 auto;">
-                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--primary); margin-bottom: 32px; border-radius: 8px;">
-                    <h3 style="color: var(--primary); margin-bottom: 32px;">Infrastructure & Systems</h3>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">1. Who is your current hosting provider for yourfora.com?</label>
-                        <input type="text" name="hosting_provider" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. Do you already have a CRM in place?</label>
-                        <select name="crm_status" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
-                            <option value="">Select...</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                        <input type="text" name="crm_name" placeholder="If yes, which one? (HubSpot, Salesforce, GoHighLevel, other)" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
-                        <input type="text" name="crm_preference" placeholder="Keep and integrate, or replace?" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Do you currently use an email platform?</label>
-                        <select name="email_platform_status" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
-                            <option value="">Select...</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                        <input type="text" name="email_platform_name" placeholder="If yes, which one? (HubSpot, Mailchimp, ActiveCampaign, other)" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif; margin-bottom: 12px;">
-                        <input type="text" name="email_automation_status" placeholder="Automated sequences live or mostly manual?" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">4. Do you use any calendar or scheduling tool today?</label>
-                        <input type="text" name="calendar_tool" placeholder="If yes, which one?" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                </div>
-
-                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--success); margin-bottom: 32px; border-radius: 8px;">
-                    <h3 style="color: var(--success); margin-bottom: 32px;">Lead Flow & Sales Process</h3>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">1. What currently qualifies a practice as sales-ready?</label>
-                        <textarea name="sales_ready_criteria" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. Is the primary conversion goal an assessment call, demo, or direct sales conversation?</label>
-                        <input type="text" name="conversion_goal" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Average response time from new inquiry to first contact?</label>
-                        <input type="text" name="response_time" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">4. What typically causes deals to stall or go cold?</label>
-                        <textarea name="deal_stall_reasons" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
-                    </div>
-                </div>
-
-                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--secondary); margin-bottom: 32px; border-radius: 8px;">
-                    <h3 style="color: var(--secondary); margin-bottom: 24px;">Market & Positioning</h3>
-                    <div style="background: linear-gradient(to right, #FFF5F0 0%, #FFFFFF 100%); padding: 24px; margin-bottom: 32px; border-radius: 8px; border-left: 4px solid var(--secondary);">
-                        <p style="font-size: 16px; color: var(--light); margin-bottom: 12px; font-weight: 600;">What Fora Does:</p>
-                        <p style="font-size: 18px; color: var(--text); line-height: 1.7;">Comprehensive practice management for medical, dental, and allied health providers. We handle financial governance, operational stewardship, resource management, and patient engagement—allowing you to focus on practicing medicine while we manage the administrative complexities.</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 12px;">1. Which practice management companies does Fora most often compete against?</label>
-                        <textarea name="competitors" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. What phrases do practices usually say or search when they need help?</label>
-                        <textarea name="search_phrases" required rows="3" style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;"></textarea>
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Are most inbound leads urgent, comparison-driven, or exploratory?</label>
-                        <input type="text" name="lead_type" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                </div>
-
-                <div style="background: var(--bg); padding: 48px; border-left: 8px solid var(--primary); border-radius: 8px; margin-bottom: 48px;">
-                    <h3 style="color: var(--primary); margin-bottom: 32px;">Decision Making & Revenue</h3>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">1. Who is the decision-maker at the practice (owner, administrator, operations director)?</label>
-                        <input type="text" name="decision_maker" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">2. Average contract value?</label>
-                        <input type="text" name="contract_value" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 12px;">3. Typical sales cycle length?</label>
-                        <input type="text" name="sales_cycle" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid #E2E8F0; border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                </div>
-
-                <div style="background: linear-gradient(135deg, #003D5C 0%, #002A40 100%); padding: 48px; border-radius: 12px; margin-bottom: 32px;">
-                    <h3 style="color: var(--white); margin-bottom: 24px; font-size: 28px;">Agreement & Contact Information</h3>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 12px;">Your Name</label>
-                        <input type="text" name="contact_name" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: var(--white); border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 12px;">Your Email</label>
-                        <input type="email" name="contact_email" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: var(--white); border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-bottom: 24px;">
-                        <label style="display: block; font-size: 18px; font-weight: 600; color: var(--white); margin-bottom: 12px;">Phone Number</label>
-                        <input type="tel" name="contact_phone" required style="width: 100%; padding: 16px; font-size: 16px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: var(--white); border-radius: 8px; font-family: 'Inter', sans-serif;">
-                    </div>
-                    
-                    <div style="margin-top: 40px; padding-top: 32px; border-top: 2px solid rgba(255,255,255,0.2);">
-                        <label style="display: flex; align-items: start; gap: 16px; cursor: pointer;">
-                            <input type="checkbox" name="agreement" required style="width: 24px; height: 24px; margin-top: 4px; cursor: pointer;">
-                            <span style="font-size: 18px; color: var(--white); line-height: 1.6;">I agree to move forward with this proposal and the services outlined above.</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div style="text-align: center;">
-                    <button type="submit" style="background: var(--primary); color: var(--white); padding: 28px 72px; border-radius: 12px; border: none; font-weight: 900; font-size: 24px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; box-shadow: 0 12px 40px rgba(0, 102, 255, 0.3); transition: all 0.3s; font-family: 'Inter', sans-serif;">
-                        Submit Application
-                    </button>
-                </div>
-            </form>
-        </div>
-    </section>
-
-    <script>
-    document.getElementById('intakeForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitButton = this.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.textContent = 'Submitting...';
-        
-        // Collect form data
-        const formData = new FormData(this);
-        const data = {};
-        for (let [key, value] of formData.entries()) {
-            data[key] = value;
-        }
-        
-        // Create email HTML body
-        let emailHTML = `
-        <h2>FORA PROPOSAL APPLICATION</h2>
-        
-        <h3>Infrastructure & Systems</h3>
-        <p><strong>Hosting Provider:</strong> ${data.hosting_provider}</p>
-        <p><strong>CRM Status:</strong> ${data.crm_status}</p>
-        <p><strong>CRM Name:</strong> ${data.crm_name}</p>
-        <p><strong>CRM Preference:</strong> ${data.crm_preference}</p>
-        <p><strong>Email Platform Status:</strong> ${data.email_platform_status}</p>
-        <p><strong>Email Platform Name:</strong> ${data.email_platform_name}</p>
-        <p><strong>Email Automation Status:</strong> ${data.email_automation_status}</p>
-        <p><strong>Calendar Tool:</strong> ${data.calendar_tool}</p>
-        
-        <h3>Lead Flow & Sales Process</h3>
-        <p><strong>Sales Ready Criteria:</strong> ${data.sales_ready_criteria}</p>
-        <p><strong>Conversion Goal:</strong> ${data.conversion_goal}</p>
-        <p><strong>Response Time:</strong> ${data.response_time}</p>
-        <p><strong>Deal Stall Reasons:</strong> ${data.deal_stall_reasons}</p>
-        
-        <h3>Market & Positioning</h3>
-        <p><strong>Competitors:</strong> ${data.competitors}</p>
-        <p><strong>Search Phrases:</strong> ${data.search_phrases}</p>
-        <p><strong>Lead Type:</strong> ${data.lead_type}</p>
-        
-        <h3>Decision Making & Revenue</h3>
-        <p><strong>Decision Maker:</strong> ${data.decision_maker}</p>
-        <p><strong>Contract Value:</strong> ${data.contract_value}</p>
-        <p><strong>Sales Cycle:</strong> ${data.sales_cycle}</p>
-        
-        <h3>Contact Information</h3>
-        <p><strong>Name:</strong> ${data.contact_name}</p>
-        <p><strong>Email:</strong> ${data.contact_email}</p>
-        <p><strong>Phone:</strong> ${data.contact_phone}</p>
-        
-        <p style="margin-top: 30px; padding: 20px; background: #D4F1D4; border-left: 4px solid #00AA44;">
-            <strong>CLIENT AGREED TO PROPOSAL TERMS</strong><br>
-            One-time build cost + Monthly SEO cost + Annual software licenses
-        </p>
-        `;
-        
-        try {
-            const response = await fetch('https://api.resend.com/emails', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer re_N9Tt6NUn_7ALdiVefzGrWextCjoLTCQ1q',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    from: 'Fora Proposals <info@tagglefish.com>',
-                    to: ['webguys2hire@gmail.com'],
-                    subject: `Fora Proposal Application - ${data.contact_name}`,
-                    html: emailHTML
-                })
-            });
-            
-            if (response.ok) {
-                alert('Success! Your application has been submitted. We will contact you shortly to schedule the kickoff call.');
-                this.reset();
-            } else {
-                throw new Error('Failed to send');
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        /* High-Converting Navy & Orange Palette */
+                        brand: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            500: '#334e68',
+                            600: '#243b53',
+                            800: '#102a43',
+                            900: '#0f172a', /* Deep Navy */
+                        },
+                        action: {
+                            50: '#fff4ed',
+                            100: '#ffe6d4',
+                            500: '#f97316', /* Bright Orange */
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        }
+                    },
+                    boxShadow: {
+                        '3d-button': '0 8px 0 0 #c2410c',
+                        '3d-button-hover': '0 2px 0 0 #c2410c',
+                    }
+                }
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('There was an error submitting your application. Please email us directly at webguys@gmail.com');
-        } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Submit Application';
         }
-    });
     </script>
+</head>
+<body class="bg-slate-50 text-slate-800">
 
-    <section class="cta-section">
-        <div class="container">
-            <h2>Stop Losing Practices to<br>Generic Management Companies</h2>
-            <p>Every week you wait is another week practices choose companies who don't understand the full scope of practice management. You do. Now prove it with a system that showcases your comprehensive services.</p>
-            <a href="mailto:webguys2hire@gmail.com" class="btn">Let's Get Started</a>
+
+    <!-- Navigation -->
+    <nav class="bg-white border-b-2 border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="font-black text-2xl tracking-tighter text-brand-900 flex items-center gap-2">
+                <div class="bg-brand-600 text-white p-1.5 rounded-lg shadow-sm">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 11.5V6a2 2 0 0 0-4 0v1.5"/>
+                        <path d="M14 10V5a2 2 0 0 0-4 0v2"/>
+                        <path d="M10 10.5V4a2 2 0 0 0-4 0v6.5"/>
+                        <path d="M6 14v-2a2 2 0 0 0-4 0v6a8 8 0 0 0 16 0v-5a2 2 0 0 0-4 0v2.5"/>
+                    </svg>
+                </div>
+                SMART ECOSYSTEM
+            </div>
+            <div class="hidden md:flex items-center gap-4">
+                <a href="#pricing" class="text-sm font-black text-white uppercase tracking-widest bg-action-500 border-2 border-action-700 px-6 py-2.5 rounded-lg hover:bg-action-600 transition-all shadow-[0_4px_0_0_#c2410c] hover:shadow-[0_2px_0_0_#c2410c] hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none">
+                    View Pricing
+                </a>
+            </div>
         </div>
-    </section>
+    </nav>
 
-    <footer>
-        <div class="container">
+
+    <main class="fade-in block">
+       
+        <!-- Funnel Hero -->
+        <header class="pt-16 pb-24 px-6 text-center max-w-5xl mx-auto relative">
+            <p class="text-brand-600 font-black text-lg md:text-xl uppercase tracking-widest mb-6">
+                One Ecosystem. Chrome Captures. GSuite Runs The Business.
+            </p>
+
+
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter text-brand-900 leading-[1.05] mb-8">
+                Stop Losing Leads & <br><span class="highlight-yellow inline-block mt-2">Stop Guessing On Price.</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-600 mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
+                Three tools built for contractors and realtors that run inside Chrome and Google. <strong class="text-brand-900 font-black border-b-4 border-brand-200">No new software. No dashboards. No learning curve.</strong>
+            </p>
+           
+            <div class="flex flex-col items-center justify-center gap-4">
+                <a href="#products" class="block w-full sm:w-auto btn-orange px-14 py-6 rounded-2xl font-black text-2xl md:text-3xl uppercase tracking-wide">
+                    See The Tools
+                </a>
+                <p class="text-base font-black text-slate-500 mt-4 flex items-center justify-center gap-2">
+                    <span class="bounce-arrow text-xl">👇</span> Pick your product below
+                </p>
+            </div>
+        </header>
+
+
+        <!-- The Problem (Now Clean White & Blue) -->
+        <section class="py-24 px-6 bg-white relative overflow-hidden border-y-2 border-slate-200">
+            <div class="absolute inset-0 opacity-50" style="background-image: radial-gradient(#d9e2ec 2px, transparent 2px); background-size: 30px 30px;"></div>
+           
+            <div class="max-w-6xl mx-auto relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-black mb-6 tracking-tight text-brand-900">The work is out there. <br><span class="text-brand-500">You just don't have a system to capture it.</span></h2>
+                </div>
+               
+                <div class="grid md:grid-cols-2 gap-12 items-start mb-16">
+                    <div class="bg-slate-50 border-4 border-slate-200 p-8 md:p-10 rounded-3xl shadow-brutal transform -rotate-1">
+                        <div class="bg-brand-900 text-white font-black uppercase tracking-widest text-sm inline-block px-4 py-1.5 rounded-lg mb-6 shadow-sm">For Contractors</div>
+                        <p class="text-lg text-slate-600 font-medium leading-relaxed mb-6">
+                            Job posts on Angi, Thumbtack, BuildingConnected, LinkedIn, and a dozen other platforms. Leads coming into your Gmail. Clients requesting quotes through your website.
+                        </p>
+                        <p class="text-xl text-brand-900 font-black mb-6">You see the work. You just don't track it.</p>
+                        <ul class="space-y-3 text-slate-700 font-bold text-lg">
+                            <li class="flex items-center gap-3"><span class="text-brand-500">❌</span> So you forget leads.</li>
+                            <li class="flex items-center gap-3"><span class="text-brand-500">❌</span> Miss follow-ups.</li>
+                            <li class="flex items-center gap-3"><span class="text-brand-500">❌</span> Send bids late.</li>
+                            <li class="flex items-center gap-3"><span class="text-brand-500">❌</span> Lose jobs you should have won.</li>
+                        </ul>
+                    </div>
+
+
+                    <div class="bg-slate-50 border-4 border-slate-200 p-8 md:p-10 rounded-3xl shadow-brutal transform rotate-1">
+                        <div class="bg-brand-900 text-white font-black uppercase tracking-widest text-sm inline-block px-4 py-1.5 rounded-lg mb-6 shadow-sm">For Realtors</div>
+                        <p class="text-lg text-slate-600 font-medium leading-relaxed mb-6">
+                            Competing listings on Facebook Marketplace and Craigslist. Prices changing every week.
+                        </p>
+                        <p class="text-xl text-brand-900 font-black mb-6">You're guessing when you should be knowing.</p>
+                        <ul class="space-y-3 text-slate-700 font-bold text-lg">
+                            <li class="flex items-center gap-3"><span class="text-brand-500">❌</span> So you price too high and sit.</li>
+                            <li class="flex items-center gap-3"><span class="text-brand-500">❌</span> Or price too low and leave money behind.</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="bg-brand-50 text-brand-900 rounded-2xl p-8 max-w-3xl mx-auto text-center border-2 border-brand-200 shadow-sm">
+                    <p class="text-brand-600 font-black uppercase tracking-widest text-sm mb-2">The Root Cause</p>
+                    <p class="text-2xl md:text-3xl font-black">Not enough leads. Too many platforms. <br>No single system to run it all.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- The Solution -->
+        <section class="py-20 px-6 bg-slate-50 text-center border-b-2 border-slate-200">
+            <div class="max-w-4xl mx-auto">
+                <p class="text-brand-600 font-black text-xl uppercase tracking-widest mb-4">The Solution</p>
+                <h2 class="text-4xl md:text-6xl font-black text-brand-900 tracking-tight mb-8">One Ecosystem.</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 text-2xl md:text-3xl font-black text-slate-700">
+                    <div class="bg-white px-8 py-4 rounded-xl shadow-sm border-2 border-slate-200 flex items-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" class="h-8"> Chrome Captures
+                    </div>
+                    <div class="hidden md:block text-slate-400">→</div>
+                    <div class="bg-white px-8 py-4 rounded-xl shadow-sm border-2 border-slate-200 flex items-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Google_Drive_icon_%282020%29.svg" class="h-8"> GSuite Runs It
+                    </div>
+                </div>
+                <p class="text-xl text-slate-600 font-medium mt-10 max-w-2xl mx-auto leading-relaxed">
+                    Three products. Each one solves a specific problem. All of them work together. <strong class="text-brand-900 font-black">That's the whole system.</strong>
+                </p>
+            </div>
+        </section>
+
+
+        <!-- Product 1: Contractors Grabber -->
+        <section id="products" class="py-24 px-6 bg-white">
+            <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div class="bg-brand-100 text-brand-800 font-black uppercase tracking-widest text-sm inline-block px-4 py-1.5 rounded-lg mb-4 border border-brand-200">Product 1</div>
+                    <h2 class="text-4xl md:text-5xl font-black text-brand-900 mb-4 tracking-tight">Smart Grabber For Contractors</h2>
+                    <div class="inline-block bg-slate-100 text-slate-700 font-black px-3 py-1 rounded mb-8 border border-slate-200">
+                        $9 One-Time + $5/mo
+                    </div>
+                   
+                    <h3 class="text-2xl font-black text-slate-800 mb-3">Capture every job lead before it disappears.</h3>
+                    <p class="text-lg text-slate-600 font-medium mb-8">
+                        You're browsing Angi, Thumbtack, LinkedIn, BuildingConnected, and more every day. You see jobs worth bidding. Then you close the tab and forget.
+                    </p>
+
+
+                    <div class="space-y-6 mb-8">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-brand-900 text-white rounded-full flex items-center justify-center font-black text-lg">1</div>
+                            <div>
+                                <h4 class="font-black text-lg text-brand-900">Install & Click</h4>
+                                <p class="text-slate-600 font-medium">Install in Chrome. Browse any job platform. See a lead worth saving? Click once.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-brand-900 text-white rounded-full flex items-center justify-center font-black text-lg">2</div>
+                            <div>
+                                <h4 class="font-black text-lg text-brand-900">Auto-Extracts Data</h4>
+                                <p class="text-slate-600 font-medium">Pulls job title, location, budget, phone, description, and source automatically.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-brand-900 text-white rounded-full flex items-center justify-center font-black text-lg">3</div>
+                            <div>
+                                <h4 class="font-black text-lg text-brand-900">Your Sheet Does The Rest</h4>
+                                <p class="text-slate-600 font-medium">Everything goes straight into your Google Sheet pipeline. Job type detected. Source tracked. Status set to "New".</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <a href="#pricing" class="inline-block btn-blue px-8 py-4 rounded-xl font-black text-lg uppercase tracking-wide">
+                        Get Grabber For Contractors
+                    </a>
+                </div>
+
+
+                <div class="bg-slate-50 p-8 md:p-10 rounded-3xl border-4 border-slate-200 shadow-brutal">
+                    <h4 class="font-black text-brand-900 uppercase tracking-widest text-sm mb-4 border-b-2 border-slate-200 pb-2">Supported Platforms</h4>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div>
+                            <p class="font-bold text-slate-400 text-xs uppercase tracking-widest mb-2">Leads</p>
+                            <ul class="text-slate-700 font-bold space-y-1">
+                                <li>Angi</li>
+                                <li>Thumbtack</li>
+                                <li>Yelp</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-400 text-xs uppercase tracking-widest mb-2">Projects</p>
+                            <ul class="text-slate-700 font-bold space-y-1">
+                                <li>LinkedIn</li>
+                                <li>BuildingConnected</li>
+                                <li>ConstructConnect</li>
+                                <li>BidClerk / iSqFt</li>
+                                <li>PlanHub</li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <h4 class="font-black text-brand-900 uppercase tracking-widest text-sm mb-4 border-b-2 border-slate-200 pb-2">Why $5/Month?</h4>
+                    <p class="text-slate-600 font-medium mb-4">One saved job = <strong class="text-brand-900">$2,000 to $10,000.</strong> <br>$5/month = nothing.</p>
+                    <div class="bg-brand-50 border border-brand-200 p-4 rounded-xl">
+                        <p class="text-brand-800 font-black text-sm">Your pipeline is always updated. Your money is always visible. It becomes habit.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Product 2: Realtors Grabber -->
+        <section class="py-24 px-6 bg-slate-50 border-t border-slate-200">
+            <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center flex-col-reverse lg:flex-row-reverse">
+               
+                <!-- Text Right Side -->
+                <div>
+                    <div class="bg-brand-100 text-brand-800 font-black uppercase tracking-widest text-sm inline-block px-4 py-1.5 rounded-lg mb-4 border border-brand-200">Product 2</div>
+                    <h2 class="text-4xl md:text-5xl font-black text-brand-900 mb-4 tracking-tight">Smart Grabber For Realtors</h2>
+                    <div class="inline-block bg-slate-100 text-slate-700 font-black px-3 py-1 rounded mb-8 border border-slate-200">
+                        $9 One-Time + $5/mo
+                    </div>
+                   
+                    <h3 class="text-2xl font-black text-slate-800 mb-3">Know your market before you price or post.</h3>
+                    <p class="text-lg text-slate-600 font-medium mb-8">
+                        Facebook Marketplace and Craigslist are full of real pricing data. But you have no system to collect it. So you browse, close tabs, and forget. Then you guess on price.
+                    </p>
+
+
+                    <div class="space-y-6 mb-8">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-brand-900 text-white rounded-full flex items-center justify-center font-black text-lg">1</div>
+                            <div>
+                                <h4 class="font-black text-lg text-brand-900">Install & Click</h4>
+                                <p class="text-slate-600 font-medium">Browse FB Marketplace or Craigslist. See a competing listing? Click once.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-brand-900 text-white rounded-full flex items-center justify-center font-black text-lg">2</div>
+                            <div>
+                                <h4 class="font-black text-lg text-brand-900">Auto-Extracts Data</h4>
+                                <p class="text-slate-600 font-medium">Pulls address, price, beds, baths, sqft, and days listed automatically.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 shrink-0 bg-brand-900 text-white rounded-full flex items-center justify-center font-black text-lg">3</div>
+                            <div>
+                                <h4 class="font-black text-lg text-brand-900">Calculates Instantly</h4>
+                                <p class="text-slate-600 font-medium">Price per SqFt is calculated automatically. Everything writes straight into your Google Sheet market tracker.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <a href="#pricing" class="inline-block btn-blue px-8 py-4 rounded-xl font-black text-lg uppercase tracking-wide">
+                        Get Grabber For Realtors
+                    </a>
+                </div>
+
+
+                <!-- Box Left Side -->
+                <div class="bg-white p-8 md:p-10 rounded-3xl border-4 border-slate-200 shadow-brutal">
+                    <h4 class="font-black text-brand-900 uppercase tracking-widest text-lg mb-6 border-b-2 border-slate-100 pb-4">Your Market Intelligence Tab</h4>
+                   
+                    <div class="space-y-4 mb-8">
+                        <div class="bg-brand-50 border border-brand-200 p-4 rounded-xl">
+                            <h5 class="font-black text-brand-700 uppercase tracking-wider text-sm mb-1 flex items-center gap-2"><span class="text-lg">🔥</span> High Demand Areas</h5>
+                            <p class="text-brand-900 font-medium text-sm">Few listings. Moving fast. Low supply. You have pricing power here.</p>
+                        </div>
+                        <div class="bg-slate-100 border border-slate-300 p-4 rounded-xl">
+                            <h5 class="font-black text-slate-700 uppercase tracking-wider text-sm mb-1 flex items-center gap-2"><span class="text-lg">⚠️</span> Saturated Areas</h5>
+                            <p class="text-slate-900 font-medium text-sm">Too many listings. Sitting long. High competition. Price aggressively.</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-xl">
+                            <h5 class="font-black text-slate-500 uppercase tracking-wider text-sm mb-1 flex items-center gap-2"><span class="text-lg">⚖️</span> Balanced Areas</h5>
+                            <p class="text-slate-600 font-medium text-sm">Normal market activity. Hold your price.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="bg-brand-50 border-2 border-brand-200 p-6 rounded-xl text-center">
+                        <p class="font-black text-brand-600 uppercase tracking-widest text-xs mb-2">Your Listing vs The Market</p>
+                        <p class="font-medium text-sm text-slate-600">Smart Grabber gives you a one-line answer: Underpriced, Competitive, or Overpriced.</p>
+                        <p class="font-black text-brand-900 mt-2">Not guesses. Your own data.</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+
+        <!-- Product 3: Smart Flows (Now White & Blue) -->
+        <section class="py-24 px-6 bg-white border-y-8 border-brand-100 relative overflow-hidden">
+            <div class="max-w-6xl mx-auto relative z-10">
+                <div class="text-center mb-16">
+                    <div class="bg-brand-100 text-brand-800 font-black uppercase tracking-widest text-sm inline-block px-4 py-1.5 rounded-lg mb-6 border border-brand-200">Product 3</div>
+                    <h2 class="text-5xl md:text-6xl font-black text-brand-900 mb-4 tracking-tight">Smart Flows For Contractors</h2>
+                    <div class="inline-block bg-slate-100 text-slate-700 font-black px-4 py-2 rounded-lg mb-6 border border-slate-200">
+                        $149 Setup + $29/Quarter
+                    </div>
+                    <h3 class="text-3xl font-black text-slate-800 mb-6">Turn Gmail into a contractor job pipeline.</h3>
+                    <p class="text-xl text-slate-600 font-medium max-w-3xl mx-auto">
+                        Leads come into Gmail. They get buried. Follow-ups get missed. Quotes go out late. Jobs are lost. <br><strong class="text-brand-900 font-black">Not because you're bad at work. Because your inbox is not a pipeline.</strong>
+                    </p>
+                </div>
+
+
+                <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                    <!-- Flow 1 -->
+                    <div class="bg-slate-50 p-8 rounded-3xl border-2 border-slate-200 shadow-brutal">
+                        <div class="bg-brand-900 w-12 h-12 rounded-xl flex items-center justify-center font-black text-xl text-white mb-6">1</div>
+                        <h4 class="text-2xl font-black text-brand-900 mb-3">Gmail Add-on</h4>
+                        <p class="text-slate-600 font-medium mb-4">Open any inquiry email. Click "Save as Lead" in the sidebar. Smart Flows pulls name, phone, email, location, job type, and description directly from the email.</p>
+                        <p class="text-brand-700 font-black">Review it. Save it. Lead is in your pipeline instantly.</p>
+                    </div>
+                    <!-- Flow 2 -->
+                    <div class="bg-slate-50 p-8 rounded-3xl border-2 border-slate-200 shadow-brutal">
+                        <div class="bg-brand-900 w-12 h-12 rounded-xl flex items-center justify-center font-black text-xl text-white mb-6">2</div>
+                        <h4 class="text-2xl font-black text-brand-900 mb-3">Pre-Built Forms</h4>
+                        <p class="text-slate-600 font-medium mb-4">You get a ready-to-use form with every field a contractor needs. When filled out, Smart Flows auto-generates a Lead ID, calculates a score, writes to your Sheet, and emails the client a professional confirmation.</p>
+                        <p class="text-brand-700 font-black">No manual entry. No follow-up email to write. All automatic.</p>
+                    </div>
+                    <!-- Flow 3 -->
+                    <div class="bg-slate-50 p-8 rounded-3xl border-2 border-slate-200 shadow-brutal">
+                        <div class="bg-brand-900 w-12 h-12 rounded-xl flex items-center justify-center font-black text-xl text-white mb-6">3</div>
+                        <h4 class="text-2xl font-black text-brand-900 mb-3">Proposal Generator</h4>
+                        <p class="text-slate-600 font-medium mb-4">Select any lead in your Sheet. Click Generate Bid. AI writes the proposal from the job details. Google Doc created. PDF exported. Email sent to client.</p>
+                        <p class="text-brand-700 font-black">No retyping. No starting from scratch. No copy paste.</p>
+                    </div>
+                </div>
+
+
+                <!-- Lead Scoring Visual -->
+                <div class="bg-brand-50 text-brand-900 rounded-3xl p-8 md:p-12 border-2 border-brand-200 shadow-sm max-w-4xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h3 class="text-3xl font-black uppercase tracking-tight text-brand-900">Automated Lead Scoring</h3>
+                        <p class="text-slate-600 font-bold">Every lead is scored automatically so you know who is worth your time.</p>
+                    </div>
+                   
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-2 text-sm font-bold bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Phone provided:</span> <span class="text-brand-600">+40</span></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Email provided:</span> <span class="text-brand-600">+10</span></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Budget provided:</span> <span class="text-brand-600">+20</span></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>High budget ($10K+):</span> <span class="text-brand-600">+20</span></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Timeline ASAP:</span> <span class="text-brand-600">+30</span></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Timeline this week:</span> <span class="text-brand-600">+20</span></div>
+                            <div class="flex justify-between border-b border-slate-100 pb-2"><span>Large project:</span> <span class="text-brand-600">+20</span></div>
+                            <div class="flex justify-between"><span>Photos uploaded:</span> <span class="text-brand-600">+15</span></div>
+                        </div>
+                       
+                        <div class="space-y-4">
+                            <div class="bg-brand-900 border-l-8 border-brand-500 p-4 rounded-r-lg text-white">
+                                <p class="font-black text-xl">80+ = HOT</p>
+                                <p class="text-brand-200 text-sm font-bold">Call immediately</p>
+                            </div>
+                            <div class="bg-brand-100 border-l-8 border-brand-500 p-4 rounded-r-lg">
+                                <p class="font-black text-brand-900 text-xl">50-79 = WARM</p>
+                                <p class="text-brand-700 text-sm font-bold">Follow up today</p>
+                            </div>
+                            <div class="bg-white border-l-8 border-slate-300 p-4 rounded-r-lg shadow-sm">
+                                <p class="font-black text-slate-700 text-xl">Below 50 = COLD</p>
+                                <p class="text-slate-500 text-sm font-bold">Automated email only</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="text-center mt-16">
+                    <a href="#pricing" class="inline-block btn-orange px-12 py-6 rounded-2xl font-black text-2xl md:text-3xl uppercase tracking-wide">
+                        Get Smart Flows Installed
+                    </a>
+                    <p class="mt-6 font-bold text-slate-500 text-lg">Option 1: We install it for you in 24 hours. You don't touch anything.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Synergy / Under the Hood -->
+        <section class="py-24 px-6 bg-slate-50">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-16">
+                    <p class="text-brand-600 font-black text-xl uppercase tracking-widest mb-4">The Master System</p>
+                    <h2 class="text-4xl md:text-5xl font-black text-brand-900 tracking-tight">Use one. Use all three. <br>They're built to connect.</h2>
+                </div>
+
+
+                <div class="bg-white border-4 border-slate-200 rounded-3xl p-8 md:p-12 shadow-sm text-center mb-16">
+                    <p class="text-xl md:text-2xl text-slate-700 font-bold mb-6 leading-relaxed">
+                        <strong class="text-brand-600">Smart Grabber</strong> captures leads from job boards while you browse. <br>
+                        <strong class="text-brand-900">Smart Flows</strong> captures leads from your Gmail inbox and client forms.
+                    </p>
+                    <p class="text-3xl font-black text-brand-900 mb-6 bg-brand-50 py-4 rounded-xl border border-brand-100">
+                        Both write to the same Google Sheet.
+                    </p>
+                    <p class="text-xl text-slate-600 font-bold">
+                        One pipeline. Every lead source. Nothing falls through.
+                    </p>
+                </div>
+
+
+                <h3 class="text-3xl font-black text-center text-brand-900 mb-10">Built on tools you already use. Nothing new to learn.</h3>
+               
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 text-center text-sm font-bold text-slate-600">
+                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex flex-col items-center justify-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" class="h-10">
+                        <span>Grabber lives here</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex flex-col items-center justify-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" class="h-10">
+                        <span>Flows lives here</span>
+                    </div>
+                    <div class="bg-brand-50 p-6 rounded-2xl border-2 border-brand-300 shadow-sm flex flex-col items-center justify-center gap-3 md:-mt-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Google_Sheets_logo_%282014-2020%29.svg" class="h-10">
+                        <span class="text-brand-900 font-black">Pipeline lives here</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex flex-col items-center justify-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Google_Forms_2020_Logo.svg" class="h-10">
+                        <span>Client intake lives here</span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex flex-col items-center justify-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Google_Docs_logo_%282014-2020%29.svg" class="h-10">
+                        <span>Bids come from here</span>
+                    </div>
+                </div>
+
+
+                <div class="text-center mt-12 text-xl font-black text-slate-800">
+                    No new logins. No new passwords. No new apps.
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Pricing Stack -->
+        <section id="pricing" class="py-24 px-6 bg-slate-100 border-y-8 border-brand-200">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-black text-brand-900 mb-4 uppercase tracking-tight">Simple Pricing. No Surprises.</h2>
+                    <p class="text-xl text-slate-600 font-bold">Pick your system below.</p>
+                </div>
+               
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Tier 1 -->
+                    <div class="bg-white rounded-3xl border-4 border-slate-200 overflow-hidden flex flex-col shadow-sm">
+                        <div class="p-8 text-center bg-slate-50 border-b-2 border-slate-100">
+                            <h3 class="text-2xl font-black text-brand-900 mb-2 uppercase tracking-tight">Smart Grabber</h3>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">For Contractors</p>
+                            <div class="flex justify-center items-end gap-1 mb-2">
+                                <span class="text-3xl font-black text-slate-800 mb-1">$</span>
+                                <span class="text-6xl font-black text-brand-900 tracking-tighter leading-none">9</span>
+                            </div>
+                            <p class="font-black text-brand-600 uppercase tracking-widest text-xs mt-2">+ $5/month</p>
+                        </div>
+                        <div class="p-8 flex-grow">
+                            <ul class="space-y-4 mb-8 text-slate-700 font-bold">
+                                <li class="flex items-center gap-3"><span class="text-brand-500 text-xl">✓</span> Chrome extension</li>
+                                <li class="flex items-center gap-3"><span class="text-brand-500 text-xl">✓</span> Pipeline sheet auto-created</li>
+                                <li class="flex items-center gap-3"><span class="text-brand-500 text-xl">✓</span> Works on 10 job platforms</li>
+                            </ul>
+                        </div>
+                        <div class="p-6 bg-slate-50 border-t border-slate-200">
+                            <button class="w-full btn-blue py-4 rounded-xl font-black text-lg uppercase tracking-wide">
+                                Get For Contractors
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- Tier 2 -->
+                    <div class="bg-white rounded-3xl border-4 border-slate-200 overflow-hidden flex flex-col shadow-sm">
+                        <div class="p-8 text-center bg-slate-50 border-b-2 border-slate-100">
+                            <h3 class="text-2xl font-black text-brand-900 mb-2 uppercase tracking-tight">Smart Grabber</h3>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">For Realtors</p>
+                            <div class="flex justify-center items-end gap-1 mb-2">
+                                <span class="text-3xl font-black text-slate-800 mb-1">$</span>
+                                <span class="text-6xl font-black text-brand-900 tracking-tighter leading-none">9</span>
+                            </div>
+                            <p class="font-black text-brand-600 uppercase tracking-widest text-xs mt-2">+ $5/month</p>
+                        </div>
+                        <div class="p-8 flex-grow">
+                            <ul class="space-y-4 mb-8 text-slate-700 font-bold">
+                                <li class="flex items-center gap-3"><span class="text-brand-500 text-xl">✓</span> Chrome extension</li>
+                                <li class="flex items-center gap-3"><span class="text-brand-500 text-xl">✓</span> Market tracker sheet</li>
+                                <li class="flex items-center gap-3"><span class="text-brand-500 text-xl">✓</span> Facebook Marketplace & CL</li>
+                            </ul>
+                        </div>
+                        <div class="p-6 bg-slate-50 border-t border-slate-200">
+                            <button class="w-full btn-blue py-4 rounded-xl font-black text-lg uppercase tracking-wide">
+                                Get For Realtors
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- Tier 3 (The Big Offer) -->
+                    <div class="bg-white rounded-3xl border-4 border-brand-900 overflow-hidden flex flex-col shadow-brutal relative transform lg:-translate-y-4">
+                        <div class="absolute top-0 inset-x-0 h-3 bg-brand-900"></div>
+                        <div class="p-8 text-center bg-brand-50 border-b-2 border-brand-100 mt-2">
+                            <h3 class="text-2xl font-black text-brand-900 mb-2 uppercase tracking-tight">Smart Flows</h3>
+                            <p class="text-sm font-bold text-slate-600 uppercase tracking-widest mb-6">The Master Pipeline</p>
+                            <div class="flex justify-center items-end gap-1 mb-2">
+                                <span class="text-3xl font-black text-slate-800 mb-1">$</span>
+                                <span class="text-7xl font-black text-brand-900 tracking-tighter leading-none">149</span>
+                            </div>
+                            <p class="font-black text-brand-600 uppercase tracking-widest text-xs mt-2">One-Time Setup + $29/qtr</p>
+                        </div>
+                        <div class="p-8 flex-grow">
+                            <ul class="space-y-4 mb-8 text-slate-700 font-bold">
+                                <li class="flex items-start gap-3"><span class="text-brand-500 text-xl">✓</span> Gmail add-on</li>
+                                <li class="flex items-start gap-3"><span class="text-brand-500 text-xl">✓</span> Pre-built client intake form</li>
+                                <li class="flex items-start gap-3"><span class="text-brand-500 text-xl">✓</span> Automated pipeline sheet</li>
+                                <li class="flex items-start gap-3"><span class="text-brand-500 text-xl">✓</span> AI Proposal Generator</li>
+                                <li class="flex items-start gap-3 bg-brand-100 p-2 rounded border border-brand-200"><span class="text-brand-600 text-xl">⚡</span> Done-for-you install available</li>
+                            </ul>
+                        </div>
+                        <div class="p-6 bg-slate-50 border-t border-slate-200">
+                            <button class="w-full btn-orange py-5 rounded-xl font-black text-xl uppercase tracking-wide">
+                                Get Smart Flows
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="mt-12 bg-white border-2 border-slate-200 p-8 rounded-2xl text-center max-w-4xl mx-auto shadow-sm">
+                    <p class="text-brand-600 font-black uppercase tracking-widest text-sm mb-2">Bundle Note</p>
+                    <p class="text-lg text-slate-800 font-bold">Using Smart Grabber and Smart Flows together? <br>Both write to the same sheet. One pipeline. Every lead source covered.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- FAQ -->
+        <section class="py-24 px-6 bg-white">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-black text-center text-brand-900 mb-16 tracking-tight">Frequently Asked Questions</h2>
+               
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-8">
+                        <h4 class="font-black text-brand-900 text-lg mb-3">Q: Do I need to download anything?</h4>
+                        <p class="text-slate-600 font-medium leading-relaxed">A: Smart Grabber installs from the Chrome Web Store. One click. Smart Flows installs from Google Workspace Marketplace. One click. Nothing downloads to your computer.</p>
+                    </div>
+                   
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-8">
+                        <h4 class="font-black text-brand-900 text-lg mb-3">Q: Where does my data go?</h4>
+                        <p class="text-slate-600 font-medium leading-relaxed">A: Straight to your own Google Sheet in your own Google Drive. We never see your data. You own everything.</p>
+                    </div>
+                   
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-8">
+                        <h4 class="font-black text-brand-900 text-lg mb-3">Q: Do I need to build the Sheet myself?</h4>
+                        <p class="text-slate-600 font-medium leading-relaxed">A: No. Smart Grabber creates your pipeline sheet automatically on first install. Smart Flows creates your sheet and form automatically on setup. You never build anything from scratch.</p>
+                    </div>
+                   
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-8">
+                        <h4 class="font-black text-brand-900 text-lg mb-3">Q: What if I'm not technical?</h4>
+                        <p class="text-slate-600 font-medium leading-relaxed">A: Smart Grabber — install from Chrome Web Store, connect Google, done. Smart Flows — choose the done-for-you option. We handle everything.</p>
+                    </div>
+
+
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-8">
+                        <h4 class="font-black text-brand-900 text-lg mb-3">Q: What if a job platform updates?</h4>
+                        <p class="text-slate-600 font-medium leading-relaxed">A: We push updates to fix parsers when platforms change. That's part of what the monthly and quarterly fees cover.</p>
+                    </div>
+
+
+                    <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-8">
+                        <h4 class="font-black text-brand-900 text-lg mb-3">Q: Can I cancel?</h4>
+                        <p class="text-slate-600 font-medium leading-relaxed">A: Yes. Cancel anytime. Your Sheet stays in your Drive. Your data is yours. You keep everything.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Final CTA -->
+        <section class="py-24 px-6 bg-white text-center border-t-8 border-brand-900">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-5xl md:text-6xl font-black text-brand-900 mb-8 tracking-tighter leading-tight">Every lead you don't capture <br><span class="text-brand-500">is a job you don't win.</span></h2>
+                <p class="text-xl text-slate-600 font-bold mb-4">You're already doing the hard part. Finding the work. Talking to clients. Showing up.</p>
+                <p class="text-2xl text-brand-900 font-black mb-12">The system should make the rest easy.</p>
+               
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8">
+                    <a href="#pricing" class="w-full sm:w-auto btn-blue px-8 py-5 rounded-2xl font-black text-xl uppercase tracking-wide">
+                        Get Smart Grabber
+                    </a>
+                    <a href="#pricing" class="w-full sm:w-auto btn-orange px-8 py-5 rounded-2xl font-black text-xl uppercase tracking-wide">
+                        Get Smart Flows Installed
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+
+    <footer class="bg-slate-50 py-12 text-center border-t-2 border-slate-200">
+        <p class="text-2xl font-black text-brand-600 uppercase tracking-widest mb-6">
+            Chrome Captures. GSuite Runs The Business. <span class="text-brand-900">You Close The Jobs.</span>
+        </p>
+        <p class="text-slate-500 font-bold text-sm">
+            &copy; 2026 Smart Ecosystem. All rights reserved.
+        </p>
+    </footer>
+
+
+</body>
+</html>
+
